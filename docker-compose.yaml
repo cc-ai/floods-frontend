@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  webapp:
+    image: cc-ai-flood-webapp
+    build:
+      context: ./flood-front/
+    entrypoint: ["npm", "start"]
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+#    volumes:
+#      - ./flood-front:/srv/app
