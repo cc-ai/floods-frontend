@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
-import { Col } from 'antd';
-import { Select, Input } from 'antd';
+import React, {Component} from 'react';
+import {Col} from 'antd';
+import {Input} from 'antd';
 import Script from 'react-load-script';
-import uuid4 from 'uuid/v4';
-
-const Option = Select.Option;
 
 class Right extends Component {
 
@@ -28,7 +25,7 @@ class Right extends Component {
     handleScriptLoad = () => {
 
         // Declare Options For Autocomplete 
-        var options = { types: ["address"] };
+        var options = {types: ["address"]};
 
         // Initialize Google Autocomplete 
         /*global google*/
@@ -59,28 +56,30 @@ class Right extends Component {
     }
 
     render() {
+        const scriptURL = "https://maps.googleapis.com/maps/api/js?key=" + process.env.REACT_APP_GOOGLE_API_KEY + "&libraries=places";
+
         return <Col
-            xs={ 24 }
-            sm={ 12 }
-            style={ {
+            xs={24}
+            sm={12}
+            style={{
                 fontSize: '3rem',
                 color: "white",
                 padding: 20,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
-            } }
+                justifyContent: 'center',
+            }}
         >
-            <Script
-                url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv_0dp_IjbbjOUD8a-aDGAOg_dRMpjiP4&libraries=places"
-                onLoad={ this.handleScriptLoad }
+            <Script async defer
+                url={scriptURL}
+                onLoad={this.handleScriptLoad}
             />
             <Input
-                style={ { width: '75%' } }
+                style={{width: '75%'}}
                 size="large"
                 id="autocomplete"
-                onChange={ this.handleChange }
-                value={ this.state.value }
+                onChange={this.handleChange}
+                value={this.state.value}
                 allowClear
             ></Input>
         </Col>
