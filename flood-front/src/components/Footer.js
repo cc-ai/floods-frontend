@@ -14,7 +14,7 @@ class _Footer extends Component {
             bottom: 0,
             width: "100%",
         }} color="secondary">
-            CCAI ©2018 Created by Victor Schmidt
+            CCAI ©2018
         </Footer>
     }
 }
