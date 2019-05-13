@@ -77,7 +77,7 @@ class GoogleAutocompleteInput extends Component {
                     style={{
                         fontSize: '3rem',
                         color: "white",
-                        padding: 20,
+                        padding: 70,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
