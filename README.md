@@ -43,8 +43,6 @@ yarn install
 yarn start
 ```
 
-More details in the [React App README](reactapp/README.md).
-
 ## Deploying The App
 
 We use Google App Engine to deploy this app. Before proceeding, please reach out to a member of the core development team and ask them for the `app.yaml` file. Take the `app.yaml` file at put it at `reactapp/app.yaml`.
