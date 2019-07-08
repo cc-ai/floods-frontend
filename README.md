@@ -18,10 +18,6 @@ This document has the following sections:
 - Yarn
   - You can use `curl -o- -L https://yarnpkg.com/install.sh | bash` to install Yarn
 
-```
-git clone https://github.com/cc-ai/floods-frontend.git
-```
-
 ## Setup
 
 Copy the sample of the env file to your local development file:
@@ -48,4 +44,19 @@ yarn start
 ```
 
 More details in the [React App README](reactapp/README.md).
+
+## Deploying The App
+
+We use Google App Engine to deploy this app. Before proceeding, please reach out to a member of the core development team and ask them for the `app.yaml` file. Take the `app.yaml` file at put it at `reactapp/app.yaml`.
+
+Also, make sure you have installed the [`gcloud` command-line tool](https://cloud.google.com/sdk/gcloud/). Finally, please ensure that you have the appropriate Google Cloud permissions to deploy the application.
+
+Once you have the `app.yaml` and `.env` files in-place and the `gcloud` tool is installed, run the following commands from the `reactapp` directory:
+
+1. `npm install --save`
+2. `npm run-script build`
+3. `gcloud config set project climatechangeai`
+4. `gcloud app deploy`
+
+Verify the details and following the interactive instructions when running `gcloud app deploy`. Once the deploy is done, the app should be available at [https://climatechangeai.org](https://climatechangeai.org).
 
