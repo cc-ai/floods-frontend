@@ -20,6 +20,14 @@ a:hover, span.link:hover {
     color: rgb(30, 30, 30);
 }
 
+.logo {
+    padding-top: 1rem;
+}
+
+.logo img {
+    max-height: 69px;
+}
+
 span.link {
     cursor: pointer;
 }

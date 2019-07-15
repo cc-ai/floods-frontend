@@ -10,7 +10,7 @@ export class MenuLink extends React.Component {
 		if (this.props.center || this.props.center === undefined)
 			classNames.push('text-center');
 		if (this.props.pageName === this.props.currentPage)
-			return <span className={classNames.join(' ')}>{this.props.children}</span>;
+			return classNames.length ? <span className={classNames.join(' ')}>{this.props.children}</span> : this.props.children;
 		classNames.push('link');
 		return (
 			<span className={classNames.join(' ')}
