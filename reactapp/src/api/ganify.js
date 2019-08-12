@@ -5,7 +5,7 @@ export function ganify(address, onresult, onerror) {
 	const addressForUrl = address;
 
 	// Remote end point.
-	const endPoint = 'https://api.climatechangeai.org/address/version';
+	const endPoint = 'https://api.climatechangeai.org/address/munit';
 
 	// Local end point.
 	// const endPoint = 'http://localhost:5000/address/01';
