@@ -1,3 +1,5 @@
+# This logic was adapted from https://github.com/MaxLaumeister/clientside-html-password
+
 from base64 import b64encode
 from getpass import getpass
 import os
