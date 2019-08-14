@@ -43,6 +43,14 @@ yarn install
 yarn start
 ```
 
+To encrypt the bundle for deployment, you'll need to setup a working Python installation (note that this must be Python 3). If you use [pyenv](https://github.com/pyenv/pyenv), you could run `pyenv virtualenv 3.7.3 floods-frontend-3.7.3` to create a new virtual environment for this project. Feel free to manage your Python installation however you'd like.
+
+Once you have a working Python installation, install the required dependencies via the following command:
+
+```
+pip install -r requirements.txt
+```
+
 ## Deploying The App
 
 We use Google App Engine to deploy this app. Before proceeding, please reach out to a member of the core development team and ask them for the `app.yaml` file. Take the `app.yaml` file at put it at `reactapp/app.yaml`.
@@ -53,8 +61,11 @@ Once you have the `app.yaml` and `.env` files in-place and the `gcloud` tool is 
 
 1. `npm install --save`
 2. `npm run-script build`
-3. `gcloud config set project climatechangeai`
-4. `gcloud app deploy`
+3. `python encrypt.py`
+4. `gcloud config set project climatechangeai`
+5. `gcloud app deploy`
+
+Note that when you run `python encrypt.py`, you will be prompted for a password.
 
 Verify the details and following the interactive instructions when running `gcloud app deploy`. Once the deploy is done, the app should be available at [https://climatechangeai.org](https://climatechangeai.org).
 
