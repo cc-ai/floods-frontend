@@ -24,6 +24,10 @@ function setCaretPosition(elemId, caretPos) {
 export class Search extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			submitting: false,
+			windowGotFocus: false,
+		};
 		this.onInputFocus = this.onInputFocus.bind(this);
 		this.onInputBlur = this.onInputBlur.bind(this);
 		this.onAddressChanged = this.onAddressChanged.bind(this);
@@ -33,10 +37,25 @@ export class Search extends React.Component {
 		this.hasPlaces = this.hasPlaces.bind(this);
 		this.onCompletionFocus = this.onCompletionFocus.bind(this);
 		this.onCompletionBlur = this.onCompletionBlur.bind(this);
+		this.turnSubmittingFlag = this.turnSubmittingFlag.bind(this);
+		this.setWindowFocus = this.setWindowFocus.bind(this);
+		this.unsetWindowFocus = this.unsetWindowFocus.bind(this);
 	}
 
-	onInputFocus() {
-		this.props.onChange({autocomplete: true});
+	setState(state) {
+		return new Promise(resolve => super.setState(state, resolve));
+	}
+
+	turnSubmittingFlag() {
+		return this.setState({submitting: !this.state.submitting});
+	}
+
+	onInputFocus(event) {
+		if (this.state.windowGotFocus) {
+			this.unsetWindowFocus();
+		} else {
+			this.props.onChange({autocomplete: true});
+		}
 	}
 
 	onInputBlur() {
@@ -57,15 +76,16 @@ export class Search extends React.Component {
 		const update = {address: value, error: '', currentFocus: -1, autocomplete: true};
 		if (!value)
 			update.places = [];
-		this.props.onChange(update);
-		if (value) {
-			callAutocomplete(value, this.context, results => {
-				this.props.onChange({places: results});
-			}, error => {
-				console.log(error);
-				this.props.onChange({places: []});
-			});
-		}
+		this.props.onChange(update).then(() => {
+			if (value) {
+				callAutocomplete(value, this.context, results => {
+					this.props.onChange({places: results});
+				}, error => {
+					console.log(error);
+					this.props.onChange({places: []});
+				});
+			}
+		});
 	}
 
 	onKeyDown(event) {
@@ -83,9 +103,9 @@ export class Search extends React.Component {
 			console.log('ENTER');
 			if (autocomplete && currentFocus !== -1) {
 				address = this.props.search.places[currentFocus];
-				autocomplete = autocompleteHasFocus = false;
 				addressChanged = preventDefault = true;
 			}
+			autocomplete = autocompleteHasFocus = false;
 		} else if (event.keyCode === 27) { // escape
 			console.log('ESCAPE');
 			autocomplete = autocompleteHasFocus = false;
@@ -111,21 +131,22 @@ export class Search extends React.Component {
 			currentFocus: currentFocus,
 			autocomplete: autocomplete,
 			autocompleteHasFocus: autocompleteHasFocus
+		}).then(() => {
+			if (addressChanged && this.props.onSelect)
+				this.props.onSelect(address);
 		});
-		if (addressChanged && this.props.onSelect)
-			this.props.onSelect(address);
 	}
 
 	onSubmitAddress(event) {
 		event.preventDefault();
 		const address = this.props.search.address;
-		const submitButton = document.getElementById('submitButton');
-		submitButton.disabled = true;
-		const enableSubmitButton = () => {
-			submitButton.disabled = false;
-		};
 		setCaretPosition('inputAddress', 0);
-		this.props.onSubmit(address, enableSubmitButton);
+		this.turnSubmittingFlag()
+			.then(() => this.props.onSubmit(address))
+			.then((stopDisplaying) => {
+				if (!stopDisplaying)
+					this.turnSubmittingFlag();
+			})
 	}
 
 	choosePlace(currentFocus) {
@@ -179,16 +200,33 @@ export class Search extends React.Component {
 							</div>
 						</div>
 						<div className="col-md-3">
-							<button className="btn btn-secondary btn-lg btn-block py-3" type="submit" id="submitButton">
+							<button className="btn btn-secondary btn-lg btn-block py-3"
+									type="submit"
+									id="submitButton"
+									disabled={this.state.submitting}>
 								<strong>Go!</strong>
 							</button>
 						</div>
 					</div>
-					{(this.props.search.error &&
-						<div id="error-message" className="py-2">{this.props.search.error}</div>) || ''}
 				</form>
 			</div>
 		);
+	}
+
+	setWindowFocus() {
+		this.setState({windowGotFocus: true});
+	}
+
+	unsetWindowFocus() {
+		this.setState({windowGotFocus: false});
+	}
+
+	componentDidMount() {
+		window.addEventListener('focus', this.setWindowFocus);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('focus', this.setWindowFocus);
 	}
 }
 

@@ -103,9 +103,17 @@ span.link {
     color: #ffffff;
 }
 
-#search-form #error-message {
-    font-style: italic;
+.error-message {
+    font-weight: bold;
     color: red;
+    text-align: center;
+}
+
+.warning-message {
+    font-weight: bold;
+    color: orange;
+    text-align: center;
+    font-size: 1.25rem;
 }
 
 #google-map-view {
@@ -165,4 +173,34 @@ span.link {
     .header .menu .nav-link + .nav-link {
         border-left: 2px solid rgb(200, 200, 200);
     }
+}
+
+.metadata {
+    font-size: 0.9rem;
+}
+
+.metadata-title, .metadata-value {
+    padding: 0.3rem 0.1rem;
+}
+
+.metadata-title {
+    background-color: rgb(240, 240, 240);
+    font-weight: bold;
+}
+
+.metadata-value {
+    background-color: rgb(250, 250, 250);
+}
+
+.search-waiting-no {
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    transition: opacity 500ms ease-in-out, padding 300ms ease-in-out 300ms, max-height 300ms ease-in-out 300ms;
+}
+.search-waiting-yes {
+    opacity: 1;
+    max-height: 10rem;
+    padding: 1.5rem 0.5rem 0 0.5rem;
+    transition: opacity 500ms ease-in-out, max-height 500ms ease-in-out, padding 500ms ease-in-out;
 }

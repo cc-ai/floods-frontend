@@ -10,6 +10,7 @@ export class GoogleView extends React.Component {
 		this.streetPositionIsManual = false;
 		this.map = null;
 		this.places = null;
+		this.defaultPosition = null;
 		this.displayStreet = this.displayStreet.bind(this);
 		this.displayMap = this.displayMap.bind(this);
 		this.locationToAddress = this.locationToAddress.bind(this);
@@ -166,8 +167,13 @@ export class GoogleView extends React.Component {
 		const google = this.context.google;
 		// Use Montreal coordinates as default coordinates.
 		const defaultPosition = new google.maps.LatLng(45.505331312, -73.55249779);
+		this.defaultPosition = defaultPosition;
 		if (this.props.address) {
 			this.addressToLocation(this.props.address)
+				.catch(error => {
+					console.log(`Error while location for address ${this.props.address}:`, error);
+					return this.defaultPosition;
+				})
 				.then(position => {
 					this.currentAddress = this.props.address;
 					this._createMapOn(position);
@@ -193,6 +199,10 @@ export class GoogleView extends React.Component {
 			|| this.currentAddress === this.props.address)
 			return;
 		this.addressToLocation(this.props.address)
+			.catch(error => {
+				console.log(`Error while location for address ${this.props.address}:`, error);
+				return this.defaultPosition;
+			})
 			.then(position => {
 				this.currentAddress = this.props.address;
 				if (this.streetIsVisible())

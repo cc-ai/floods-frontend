@@ -1,11 +1,30 @@
 import React from "react";
 import {How} from "./how";
 import {AppContext} from "../contexts/AppContext";
-import Helmet from 'react-helmet';
+import {Helmet} from 'react-helmet-async';
 import {Content} from "../components/content";
 import {AddressManager} from "../components/AddressManager";
+import {GanifyResult} from "./ganifyResult";
 
 export class Home extends React.Component {
+	constructor(props) {
+		super(props);
+		this.onSubmitted = this.onSubmitted.bind(this);
+	}
+	setState(state) {
+		return new Promise(resolve => super.setState(state, resolve));
+	}
+	onSubmitted(address, result) {
+		const pageLoader = this.context.pageLoader;
+		if (result) {
+			const header = 'data:application/json;base64,';
+			result = JSON.parse(atob(result.substr(header.length)));
+			pageLoader('ganify', <GanifyResult initialAddress={address} initialResult={result}/>);
+		} else {
+			pageLoader('ganify', <GanifyResult initialAddress={address} initialResult={null}/>);
+		}
+		return true;
+	}
 	render() {
 		const pageLoader = this.context.pageLoader;
 		return (
@@ -19,7 +38,7 @@ export class Home extends React.Component {
 							Visualizing the consequences of Climate Change
 						</div>
 						<div className="my-5">
-							<AddressManager/>
+							<AddressManager onSubmitted={this.onSubmitted}/>
 						</div>
 						<div>
 							<button className="learn-more btn btn-secondary p-3 mb-4"
