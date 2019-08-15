@@ -54,7 +54,8 @@ export class GanifyResult extends React.Component {
 					</div>
 					<div className="col-md-6 text-center">
 						{this.state.image ? (
-							<ReactCompareImage leftImage={this.state.image}
+							<ReactCompareImage key={`${address}${Math.random()}`}
+											   leftImage={this.state.image}
 											   rightImage={this.state.flooded}
 											   leftImageAlt={'Original image'}
 											   rightImageAlt={'Modified image'}/>
