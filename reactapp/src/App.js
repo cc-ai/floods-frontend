@@ -5,7 +5,7 @@ import {About} from "./pages/about";
 import {How} from "./pages/how";
 import {Act} from "./pages/act";
 import {Contact} from "./pages/contact";
-import {AppContext} from "./contexts/AppContext";
+import {AppContext, AppContextInstance} from "./contexts/AppContext";
 import {MenuLink} from "./components/MenuLink";
 import Script from 'react-load-script';
 
@@ -16,9 +16,7 @@ export class App extends React.Component {
 		this.state = {
 			name: 'home',
 			body: <Home/>,
-			google: null,
-			geocoder: null,
-			autocomplete: null
+			context: new AppContextInstance(null, null)
 		};
 	}
 
@@ -27,20 +25,12 @@ export class App extends React.Component {
 	}
 
 	loadGoogleContext() {
-		const google = window.google;
-		const geocoder = new google.maps.Geocoder();
-		const autocomplete = new google.maps.places.AutocompleteService();
-		this.setState({google, geocoder, autocomplete});
+		this.setState({context: new AppContextInstance(this.pageLoader, window.google)});
 	}
 
 	render() {
 		return (
-			<AppContext.Provider value={{
-				pageLoader: this.pageLoader,
-				google: this.state.google,
-				geocoder: this.state.geocoder,
-				autocomplete: this.state.autocomplete
-			}}>
+			<AppContext.Provider value={this.state.context}>
 				<div className="container">
 					<div className="header row align-items-center">
 						<div className="logo col-md text-md-left">

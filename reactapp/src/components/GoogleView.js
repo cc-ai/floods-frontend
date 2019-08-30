@@ -13,8 +13,6 @@ export class GoogleView extends React.Component {
 		this.defaultPosition = null;
 		this.displayStreet = this.displayStreet.bind(this);
 		this.displayMap = this.displayMap.bind(this);
-		this.locationToAddress = this.locationToAddress.bind(this);
-		this.addressToLocation = this.addressToLocation.bind(this);
 		this.markMapOn = this.markMapOn.bind(this);
 		this.centerMap = this.centerMap.bind(this);
 		this.centerStreet = this.centerStreet.bind(this);
@@ -38,36 +36,6 @@ export class GoogleView extends React.Component {
 
 	displayMap() {
 		this.map.getStreetView().setVisible(false);
-	}
-
-	locationToAddress(position) {
-		// resolve(address)
-		// reject(status)
-		const google = this.context.google;
-		const geocoder = this.context.geocoder;
-		return new Promise((resolve, reject) => {
-			geocoder.geocode({latLng: position}, (results, status) => {
-				if (status === google.maps.GeocoderStatus.OK)
-					resolve(results[0].formatted_address);
-				else
-					reject(status);
-			});
-		});
-	}
-
-	addressToLocation(address) {
-		// resolve(latLngObject)
-		// reject(status)
-		const google = this.context.google;
-		const geocoder = this.context.geocoder;
-		return new Promise((resolve, reject) => {
-			geocoder.geocode({address: address}, (results, status) => {
-				if (status === google.maps.GeocoderStatus.OK)
-					resolve(results[0].geometry.location);
-				else
-					reject(status);
-			});
-		});
 	}
 
 	searchAddress(query, nearLocation) {
@@ -123,7 +91,7 @@ export class GoogleView extends React.Component {
 		this.map.addListener('click', (ev) => {
 			const position = ev.latLng;
 			this.centerMap(position);
-			this.locationToAddress(position)
+			this.context.locationToAddress(position)
 				.then(address => {
 					this.currentAddress = address;
 					this.props.onSelect(address)
@@ -169,7 +137,7 @@ export class GoogleView extends React.Component {
 		const defaultPosition = new google.maps.LatLng(45.505331312, -73.55249779);
 		this.defaultPosition = defaultPosition;
 		if (this.props.address) {
-			this.addressToLocation(this.props.address)
+			this.context.addressToLocation(this.props.address)
 				.catch(error => {
 					console.log(`Error while location for address ${this.props.address}:`, error);
 					return this.defaultPosition;
@@ -183,7 +151,7 @@ export class GoogleView extends React.Component {
 				})
 		} else {
 			this._createMapOn(defaultPosition);
-			this.locationToAddress(defaultPosition)
+			this.context.locationToAddress(defaultPosition)
 				.then(address => {
 					this.currentAddress = address;
 					this.centerMap(defaultPosition);
@@ -198,7 +166,7 @@ export class GoogleView extends React.Component {
 			|| prevProps.address === this.props.address
 			|| this.currentAddress === this.props.address)
 			return;
-		this.addressToLocation(this.props.address)
+		this.context.addressToLocation(this.props.address)
 			.catch(error => {
 				console.log(`Error while location for address ${this.props.address}:`, error);
 				return this.defaultPosition;

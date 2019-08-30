@@ -5,6 +5,25 @@ import {promiseGanify} from "../api/ganify";
 import {AppContext} from "../contexts/AppContext";
 import {GoogleView} from "./GoogleView";
 import {RingLoader} from "react-spinners";
+import {geotag} from "../api/geotag";
+
+// Inspired from: https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
+
+class CancelablePromise {
+	constructor(promise) {
+		this.isCanceled = false;
+		this.promise = new Promise((resolve, reject) => {
+			promise.then(
+				val => this.isCanceled ? reject({isCanceled: true}) : resolve(val),
+				error => this.isCanceled ? reject({isCanceled: true}) : reject(error)
+			);
+		});
+		this.cancel = this.cancel.bind(this);
+	}
+	cancel() {
+		this.isCanceled = true;
+	}
+}
 
 export class AddressManager extends React.Component {
 	constructor(props) {
@@ -82,11 +101,48 @@ export class AddressManager extends React.Component {
 			</div>
 		);
 	}
+
+	componentDidMount() {
+		if (this.props.guessLocation) {
+			this.cancelablePromise = new CancelablePromise(geotag());
+			this.cancelablePromise
+				.promise
+				.catch(errorMessage => {
+					if ('isCanceled' in errorMessage) {
+						console.error('Geolocation was canceled.');
+					} else {
+						console.error(`Geolocation error. ${errorMessage}`);
+					}
+					return null;
+				})
+				.then((coords) => {
+					if (!coords)
+						return null;
+					const lat = coords.latitude;
+					const lng = coords.longitude;
+					console.log(`Geolocation returned ${lat} ${lng}`);
+					return this.context.locationToAddress(new this.context.google.maps.LatLng(lat, lng));
+				})
+				.then(address => {
+					if (address)
+						this.onSelectMapAddress(address);
+				})
+				.catch(error => {
+					console.error(`Address lookup error. ${error}`);
+				});
+		}
+	}
+
+	componentWillUnmount() {
+		if (this.cancelablePromise)
+			this.cancelablePromise.cancel();
+	}
 }
 
 AddressManager.propTypes = {
 	onSubmitted: PropTypes.func,
 	initialAddress: PropTypes.string,
 	showMap: PropTypes.bool,
+	guessLocation: PropTypes.bool,
 };
 AddressManager.contextType = AppContext;

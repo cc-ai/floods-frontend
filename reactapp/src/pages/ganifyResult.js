@@ -48,7 +48,8 @@ export class GanifyResult extends React.Component {
 			<StaticPage name={'ganify'} title={address ? `${address}` : `Scenario`}>
 				<div className="row">
 					<div className="col-md-6">
-						<AddressManager showMap={true}
+						<AddressManager guessLocation={false}
+										showMap={true}
 										initialAddress={this.state.address}
 										onSubmitted={this.onSubmitted}/>
 					</div>
