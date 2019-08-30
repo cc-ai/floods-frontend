@@ -6,6 +6,7 @@ import {AppContext} from "../contexts/AppContext";
 import {GoogleView} from "./GoogleView";
 import {RingLoader} from "react-spinners";
 
+
 export class AddressManager extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,7 +21,7 @@ export class AddressManager extends React.Component {
 			error: '',
 			wait: false,
 			// address manager
-			selectedAddress: initialAddress
+			selectedAddress: initialAddress,
 		};
 		this.onSearchChange = this.onSearchChange.bind(this);
 		this.onSelectSearchAddress = this.onSelectSearchAddress.bind(this);
@@ -70,14 +71,16 @@ export class AddressManager extends React.Component {
 						onSubmit={this.onSearchSubmit}/>
 				{this.state.error ? <div className="error-message pt-4 px-2">{this.state.error}</div> : ''}
 				<div className={`text-center search-waiting-${this.state.wait ? 'yes' : 'no'}`}>
-					<div>
-						<RingLoader css={{margin: "auto"}}/>
+					<div><RingLoader css={{margin: "auto"}}/></div>
+					<div className="mt-3">
+						<strong>We are computing predictions. This may take some seconds ...</strong>
 					</div>
-					<div className="mt-3"><strong>We are computing predictions. This may take some seconds ...</strong></div>
 				</div>
 				{this.props.showMap ?
 					<GoogleView address={this.state.selectedAddress}
-								onSelect={this.onSelectMapAddress}/>
+								onSelect={this.onSelectMapAddress}
+								guessInitialLocation={this.props.guessInitialLocation}
+								displayUserRegions={this.props.displayUserRegions}/>
 					: ''}
 			</div>
 		);
@@ -88,5 +91,7 @@ AddressManager.propTypes = {
 	onSubmitted: PropTypes.func,
 	initialAddress: PropTypes.string,
 	showMap: PropTypes.bool,
+	guessInitialLocation: PropTypes.bool,
+	displayUserRegions: PropTypes.bool
 };
 AddressManager.contextType = AppContext;

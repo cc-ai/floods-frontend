@@ -20,6 +20,17 @@ a:hover, span.link:hover {
     color: rgb(30, 30, 30);
 }
 
+.reload-user-location {
+    color: gray;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.reload-user-location:hover {
+    color: rgb(30, 30, 30);
+    text-decoration: none;
+}
+
 .logo {
     padding-top: 1rem;
 }
@@ -67,6 +78,7 @@ span.link {
     margin-left: 0.5rem;
     height: 100%;
     pointer-events: none;
+    z-index: 1;
 }
 
 #search-form .autocomplete {
@@ -123,6 +135,7 @@ span.link {
     border-radius: 0.5rem;
 }
 
+#google-map-view .google-map-geolocation-button,
 #google-map-view .google-map-street-button {
     font-weight: bold;
     font-size: 1rem;
@@ -130,12 +143,37 @@ span.link {
     margin: 10px;
     height: 40px;
     line-height: 40px;
-    padding-left: 10px;
-    padding-right: 10px;
     color: black;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
     cursor: pointer;
     text-align: center;
+}
+
+#google-map-view .google-map-street-button {
+    margin-left: -10px;
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+#google-map-view .google-map-geolocation-button {
+    width: 40px;
+}
+
+#google-map-view .google-map-geolocation-button path {
+    stroke: #666666;
+    fill: #666666;
+}
+
+#google-map-view .google-map-geolocation-button:hover path {
+    stroke: black;
+    fill: black;
+}
+
+.google-map-geolocation-button {
+    padding: 8px 8px;
+}
+.google-map-geolocation-button svg {
+    display: block;
 }
 
 #google-map-view .google-map-street-button:hover {
