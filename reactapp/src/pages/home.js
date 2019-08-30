@@ -41,7 +41,10 @@ export class Home extends React.Component {
 				<div className="row">
 					<div className="col-md-7 pr-md-5">
 						<div className="my-5">
-							<AddressManager onSubmitted={this.onSubmitted}/>
+							<AddressManager onSubmitted={this.onSubmitted}
+											showMap={true}
+											guessInitialLocation={true}
+											displayUserRegions={true}/>
 						</div>
 						<div>
 							<button className="learn-more btn btn-secondary p-3 mb-4"

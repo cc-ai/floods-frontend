@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {AppContext} from "../contexts/AppContext";
+import {addGoogleMapLocationControl} from "../api/googleMapLocationControl";
+import {CancelablePromise} from "../api/cancelablePromise";
+import {geotag} from "../api/geotag";
+import {FLOOD} from "./flood_no_water_10";
+
+function samePositions(pos1, pos2) {
+	return pos1.lat() === pos2.lat() && pos1.lng() === pos2.lng();
+}
 
 export class GoogleView extends React.Component {
 	constructor(props) {
@@ -11,13 +19,17 @@ export class GoogleView extends React.Component {
 		this.map = null;
 		this.places = null;
 		this.defaultPosition = null;
+		this.currentCircle = null;
+		this.allFlood = [];
+		this.geolocation = null;
+		this.userAddress = null;
 		this.displayStreet = this.displayStreet.bind(this);
 		this.displayMap = this.displayMap.bind(this);
-		this.locationToAddress = this.locationToAddress.bind(this);
-		this.addressToLocation = this.addressToLocation.bind(this);
 		this.markMapOn = this.markMapOn.bind(this);
 		this.centerMap = this.centerMap.bind(this);
 		this.centerStreet = this.centerStreet.bind(this);
+		this.getUserLocation = this.getUserLocation.bind(this);
+		this.onMapClick = this.onMapClick.bind(this);
 	}
 
 	render() {
@@ -38,36 +50,6 @@ export class GoogleView extends React.Component {
 
 	displayMap() {
 		this.map.getStreetView().setVisible(false);
-	}
-
-	locationToAddress(position) {
-		// resolve(address)
-		// reject(status)
-		const google = this.context.google;
-		const geocoder = this.context.geocoder;
-		return new Promise((resolve, reject) => {
-			geocoder.geocode({latLng: position}, (results, status) => {
-				if (status === google.maps.GeocoderStatus.OK)
-					resolve(results[0].formatted_address);
-				else
-					reject(status);
-			});
-		});
-	}
-
-	addressToLocation(address) {
-		// resolve(latLngObject)
-		// reject(status)
-		const google = this.context.google;
-		const geocoder = this.context.geocoder;
-		return new Promise((resolve, reject) => {
-			geocoder.geocode({address: address}, (results, status) => {
-				if (status === google.maps.GeocoderStatus.OK)
-					resolve(results[0].geometry.location);
-				else
-					reject(status);
-			});
-		});
 	}
 
 	searchAddress(query, nearLocation) {
@@ -98,7 +80,58 @@ export class GoogleView extends React.Component {
 			this.currentMarker.setMap(null);
 			this.currentMarker = null;
 		}
+		// if (!this.props.displayUserRegions || !samePositions(position, this.geolocation))
 		this.currentMarker = new google.maps.Marker({position: position, map: this.map});
+		if (this.currentCircle) {
+			this.currentCircle.setMap(null);
+			this.currentCircle = null;
+		}
+		if (this.geolocation && this.props.displayUserRegions && samePositions(position, this.geolocation)) {
+			this.currentCircle = new google.maps.Circle({
+				strokeColor: '#00FF00',
+				strokeOpacity: 0.8,
+				strokeWeight: 2,
+				fillColor: '#00FF00',
+				fillOpacity: 0.35,
+				map: this.map,
+				center: position,
+				radius: 300, // in meters
+			});
+			this.currentCircle.addListener('click', this.onMapClick);
+		}
+	}
+
+	drawFlood() {
+		const google = this.context.google;
+		for (let bounds of FLOOD) {
+			const rectangleBounds = {
+				north: bounds[0],
+				south: bounds[1],
+				west: bounds[2],
+				east: bounds[3],
+			};
+			const rectangle = new google.maps.Rectangle({
+				strokeColor: '#33ccff',
+				strokeOpacity: 0.8,
+				strokeWeight: 2,
+				fillColor: '#33ccff',
+				fillOpacity: 0.35,
+				map: this.map,
+				bounds: rectangleBounds
+			});
+			rectangle.addListener('click', this.onMapClick);
+			this.allFlood.push(rectangle);
+		}
+	}
+
+	onMapClick(ev) {
+		const position = ev.latLng;
+		this.centerMap(position);
+		this.context.locationToAddress(position)
+			.then(address => {
+				this.currentAddress = address;
+				this.props.onSelect(address)
+			});
 	}
 
 	centerMap(position) {
@@ -117,18 +150,11 @@ export class GoogleView extends React.Component {
 		const google = this.context.google;
 		this.map = new google.maps.Map(document.getElementById('google-map-view'), {
 			center: defaultPosition,
-			zoom: 15
+			zoom: 15,
+			streetViewControl: false,
 		});
 		this.places = new google.maps.places.PlacesService(this.map);
-		this.map.addListener('click', (ev) => {
-			const position = ev.latLng;
-			this.centerMap(position);
-			this.locationToAddress(position)
-				.then(address => {
-					this.currentAddress = address;
-					this.props.onSelect(address)
-				});
-		});
+		this.map.addListener('click', this.onMapClick);
 		this.map.getStreetView().addListener('position_changed', () => {
 			if (this.streetPositionIsManual) {
 				return;
@@ -144,7 +170,7 @@ export class GoogleView extends React.Component {
 		});
 		const streetControl = document.createElement('div');
 		streetControl.classList.add('google-map-street-button');
-		streetControl.textContent = 'street';
+		streetControl.textContent = 'Street';
 		streetControl.index = 1;
 		streetControl.addEventListener('click', () => {
 			if (this.currentMarker) {
@@ -153,7 +179,8 @@ export class GoogleView extends React.Component {
 				this.displayStreet();
 			}
 		});
-		this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(streetControl);
+		this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(streetControl);
+		addGoogleMapLocationControl(google, this.map, this.getUserLocation);
 		document.getElementById('google-map-view').addEventListener('click', () => {
 			if (this.streetIsVisible()) {
 				console.log(`Clicked on street!`);
@@ -169,7 +196,7 @@ export class GoogleView extends React.Component {
 		const defaultPosition = new google.maps.LatLng(45.505331312, -73.55249779);
 		this.defaultPosition = defaultPosition;
 		if (this.props.address) {
-			this.addressToLocation(this.props.address)
+			this.context.addressToLocation(this.props.address)
 				.catch(error => {
 					console.log(`Error while location for address ${this.props.address}:`, error);
 					return this.defaultPosition;
@@ -183,13 +210,18 @@ export class GoogleView extends React.Component {
 				})
 		} else {
 			this._createMapOn(defaultPosition);
-			this.locationToAddress(defaultPosition)
-				.then(address => {
-					this.currentAddress = address;
-					this.centerMap(defaultPosition);
-					this.centerStreet(defaultPosition);
-					this.displayMap();
-				});
+			this.displayMap();
+			if (this.props.guessInitialLocation) {
+				this.drawFlood();
+				this.getUserLocation();
+			} else {
+				this.centerMap(defaultPosition);
+				this.centerStreet(defaultPosition);
+				this.context.locationToAddress(defaultPosition)
+					.then(address => {
+						this.currentAddress = address;
+					});
+			}
 		}
 	}
 
@@ -198,7 +230,7 @@ export class GoogleView extends React.Component {
 			|| prevProps.address === this.props.address
 			|| this.currentAddress === this.props.address)
 			return;
-		this.addressToLocation(this.props.address)
+		this.context.addressToLocation(this.props.address)
 			.catch(error => {
 				console.log(`Error while location for address ${this.props.address}:`, error);
 				return this.defaultPosition;
@@ -211,10 +243,52 @@ export class GoogleView extends React.Component {
 					this.centerMap(position);
 			})
 	}
+
+	getUserLocation() {
+		if (this.cancelablePromise)
+			return;
+		this.cancelablePromise = new CancelablePromise(geotag());
+		this.cancelablePromise
+			.promise
+			.then((coords) => {
+				if (!this.streetIsVisible()) {
+					console.log(`Geolocation returned ${coords.latitude} ${coords.longitude}`);
+					const position = new this.context.google.maps.LatLng(coords.latitude, coords.longitude);
+					this.geolocation = position;
+					this.centerMap(position);
+					this.context.locationToAddress(position)
+						.then(address => {
+							this.currentAddress = address;
+							this.userAddress = address;
+							this.props.onSelect(address);
+						});
+				}
+			})
+			.catch(error => {
+				if ('isCanceled' in error) {
+					console.error('Geolocation was canceled.');
+				} else if ("geolocationError" in error) {
+					console.error(`Geolocation error. ${error.geolocationError}`);
+				} else {
+					console.error(`Error when getting user location.`);
+					console.exception(error);
+				}
+			})
+			.finally(() => {
+				this.cancelablePromise = null;
+			});
+	}
+
+	componentWillUnmount() {
+		if (this.cancelablePromise)
+			this.cancelablePromise.cancel();
+	}
 }
 
 GoogleView.contextType = AppContext;
 GoogleView.propTypes = {
 	address: PropTypes.string.isRequired,
-	onSelect: PropTypes.func.isRequired
+	onSelect: PropTypes.func.isRequired,
+	guessInitialLocation: PropTypes.bool,
+	displayUserRegions: PropTypes.bool
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import {AppContext} from "../contexts/AppContext";
-import Octicon, {Search as SearchIcon} from '@githubprimer/octicons-react'
+import Octicon, {Search as SearchIcon} from '@primer/octicons-react';
 import {callAutocomplete} from "../api/callAutocomplete";
 import {AutoCompletionItem} from "./AutoCompletionItem";
 import PropTypes from 'prop-types';
