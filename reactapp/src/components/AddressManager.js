@@ -4,26 +4,11 @@ import {Search} from "./search";
 import {promiseGanify} from "../api/ganify";
 import {AppContext} from "../contexts/AppContext";
 import {GoogleView} from "./GoogleView";
+import {GoogleZoneView} from "./GoogleZoneView";
 import {RingLoader} from "react-spinners";
 import {geotag} from "../api/geotag";
+import {CancelablePromise} from "../api/cancelablePromise";
 
-// Inspired from: https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
-
-class CancelablePromise {
-	constructor(promise) {
-		this.isCanceled = false;
-		this.promise = new Promise((resolve, reject) => {
-			promise.then(
-				val => this.isCanceled ? reject({isCanceled: true}) : resolve(val),
-				error => this.isCanceled ? reject({isCanceled: true}) : reject(error)
-			);
-		});
-		this.cancel = this.cancel.bind(this);
-	}
-	cancel() {
-		this.isCanceled = true;
-	}
-}
 
 export class AddressManager extends React.Component {
 	constructor(props) {
@@ -39,7 +24,8 @@ export class AddressManager extends React.Component {
 			error: '',
 			wait: false,
 			// address manager
-			selectedAddress: initialAddress
+			selectedAddress: initialAddress,
+			geolocation: null
 		};
 		this.onSearchChange = this.onSearchChange.bind(this);
 		this.onSelectSearchAddress = this.onSelectSearchAddress.bind(this);
@@ -98,6 +84,10 @@ export class AddressManager extends React.Component {
 					<GoogleView address={this.state.selectedAddress}
 								onSelect={this.onSelectMapAddress}/>
 					: ''}
+				{this.state.geolocation ?
+					<GoogleZoneView initialLatitude={this.state.geolocation.latitude}
+									initialLongitude={this.state.geolocation.longitude}/>
+					: ''}
 			</div>
 		);
 	}
@@ -116,19 +106,22 @@ export class AddressManager extends React.Component {
 					return null;
 				})
 				.then((coords) => {
-					if (!coords)
-						return null;
-					const lat = coords.latitude;
-					const lng = coords.longitude;
-					console.log(`Geolocation returned ${lat} ${lng}`);
-					return this.context.locationToAddress(new this.context.google.maps.LatLng(lat, lng));
-				})
-				.then(address => {
-					if (address)
-						this.onSelectMapAddress(address);
-				})
-				.catch(error => {
-					console.error(`Address lookup error. ${error}`);
+					if (coords) {
+						const lat = coords.latitude;
+						const lng = coords.longitude;
+						console.log(`Geolocation returned ${lat} ${lng}`);
+						this.setState({geolocation: coords})
+							.then(() => {
+								return this.context.locationToAddress(new this.context.google.maps.LatLng(lat, lng));
+							})
+							.then(address => {
+								console.log(`Geolocated at ${address}`);
+								return this.onSelectMapAddress(address);
+							})
+							.catch(error => {
+								console.error(`Error when converting geolocation to address. ${error}`);
+							})
+					}
 				});
 		}
 	}

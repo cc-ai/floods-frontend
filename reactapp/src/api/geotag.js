@@ -3,11 +3,11 @@ export function geotag() {
 	// reject(errorMessage)
 	return new Promise((resolve, reject) => {
 		if ("geolocation" in navigator) {
-			navigator.geolocation.getCurrentPosition(function(position) {
+			navigator.geolocation.getCurrentPosition(function (position) {
 				resolve(position.coords);
 			}, function (error) {
 				let message = null;
-				switch(error.code) {
+				switch (error.code) {
 					case error.PERMISSION_DENIED:
 						message = "Geolocation is not allowed in your browser.";
 						break;

@@ -11,9 +11,11 @@ export class Home extends React.Component {
 		super(props);
 		this.onSubmitted = this.onSubmitted.bind(this);
 	}
+
 	setState(state) {
 		return new Promise(resolve => super.setState(state, resolve));
 	}
+
 	onSubmitted(address, result) {
 		const pageLoader = this.context.pageLoader;
 		if (result) {
@@ -25,6 +27,7 @@ export class Home extends React.Component {
 		}
 		return true;
 	}
+
 	render() {
 		const pageLoader = this.context.pageLoader;
 		return (
