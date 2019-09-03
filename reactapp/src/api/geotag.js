@@ -1,3 +1,7 @@
+function geolocationError(message) {
+	return {geolocationError: message};
+}
+
 export function geotag() {
 	// resolve(coords)
 	// reject(errorMessage)
@@ -24,10 +28,10 @@ export function geotag() {
 						message = "An error occurred without any error code.";
 						break;
 				}
-				reject(message);
+				reject(geolocationError(message));
 			});
 		} else {
-			reject("Geolocation is not available in your browser.");
+			reject(geolocationError("Geolocation is not available in your browser."));
 		}
 	});
 }

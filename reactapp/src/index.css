@@ -20,6 +20,17 @@ a:hover, span.link:hover {
     color: rgb(30, 30, 30);
 }
 
+.reload-user-location {
+    color: gray;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.reload-user-location:hover {
+    color: rgb(30, 30, 30);
+    text-decoration: none;
+}
+
 .logo {
     padding-top: 1rem;
 }
