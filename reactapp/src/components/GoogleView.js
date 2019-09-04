@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {AppContext} from "../contexts/AppContext";
+import {addGoogleMapLocationControl} from "../api/googleMapLocationControl";
+import {CancelablePromise} from "../api/cancelablePromise";
+import {geotag} from "../api/geotag";
 
 export class GoogleView extends React.Component {
 	constructor(props) {
@@ -16,6 +19,7 @@ export class GoogleView extends React.Component {
 		this.markMapOn = this.markMapOn.bind(this);
 		this.centerMap = this.centerMap.bind(this);
 		this.centerStreet = this.centerStreet.bind(this);
+		this.getUserLocation = this.getUserLocation.bind(this);
 	}
 
 	render() {
@@ -60,18 +64,19 @@ export class GoogleView extends React.Component {
 		});
 	}
 
-	markMapOn(position) {
+	markMapOn(position, noMarker) {
 		const google = this.context.google;
 		if (this.currentMarker) {
 			this.currentMarker.setMap(null);
 			this.currentMarker = null;
 		}
-		this.currentMarker = new google.maps.Marker({position: position, map: this.map});
+		if (!noMarker)
+			this.currentMarker = new google.maps.Marker({position: position, map: this.map});
 	}
 
-	centerMap(position) {
+	centerMap(position, noMarker) {
 		console.log(`Centering map to ${position.lat()} ; ${position.lng()}`);
-		this.markMapOn(position);
+		this.markMapOn(position, noMarker);
 		this.map.panTo(position);
 	}
 
@@ -85,7 +90,8 @@ export class GoogleView extends React.Component {
 		const google = this.context.google;
 		this.map = new google.maps.Map(document.getElementById('google-map-view'), {
 			center: defaultPosition,
-			zoom: 15
+			zoom: 15,
+			streetViewControl: false,
 		});
 		this.places = new google.maps.places.PlacesService(this.map);
 		this.map.addListener('click', (ev) => {
@@ -122,6 +128,7 @@ export class GoogleView extends React.Component {
 			}
 		});
 		this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(streetControl);
+		addGoogleMapLocationControl(google, this.map, this.getUserLocation);
 		document.getElementById('google-map-view').addEventListener('click', () => {
 			if (this.streetIsVisible()) {
 				console.log(`Clicked on street!`);
@@ -178,6 +185,42 @@ export class GoogleView extends React.Component {
 				else
 					this.centerMap(position);
 			})
+	}
+
+	getUserLocation() {
+		if (this.cancelablePromise)
+			return;
+		this.cancelablePromise = new CancelablePromise(geotag());
+		this.cancelablePromise
+			.promise
+			.then((coords) => {
+				if (!this.streetIsVisible()) {
+					const lat = coords.latitude;
+					const lng = coords.longitude;
+					console.log(`Geolocation returned ${lat} ${lng}`);
+					const position = new this.context.google.maps.LatLng(lat, lng);
+					this.centerMap(position, true);
+					this.currentAddress = '';
+					this.props.onSelect('');
+				}
+			})
+			.catch(error => {
+				if ('isCanceled' in error) {
+					console.error('Geolocation was canceled.');
+				} else if ("geolocationError" in error) {
+					console.error(`Geolocation error. ${error.geolocationError}`);
+				} else {
+					console.error(`Error when getting user location. ${error}`);
+				}
+			})
+			.finally(() => {
+				this.cancelablePromise = null;
+			});
+	}
+
+	componentWillUnmount() {
+		if (this.cancelablePromise)
+			this.cancelablePromise.cancel();
 	}
 }
 
