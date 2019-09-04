@@ -144,8 +144,6 @@ span.link {
     margin: 10px;
     height: 40px;
     line-height: 40px;
-    padding-left: 10px;
-    padding-right: 10px;
     color: black;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
     cursor: pointer;
@@ -173,6 +171,13 @@ span.link {
 #google-zone-view .google-map-geolocation-button:hover path {
     stroke: black;
     fill: black;
+}
+
+.google-map-geolocation-button {
+    padding: 8px 8px;
+}
+.google-map-geolocation-button svg {
+    display: block;
 }
 
 #google-map-view .google-map-street-button:hover {
