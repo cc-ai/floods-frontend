@@ -118,7 +118,7 @@ export class GoogleView extends React.Component {
 		});
 		const streetControl = document.createElement('div');
 		streetControl.classList.add('google-map-street-button');
-		streetControl.textContent = 'street';
+		streetControl.textContent = 'Street';
 		streetControl.index = 1;
 		streetControl.addEventListener('click', () => {
 			if (this.currentMarker) {
@@ -127,7 +127,7 @@ export class GoogleView extends React.Component {
 				this.displayStreet();
 			}
 		});
-		this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(streetControl);
+		this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(streetControl);
 		addGoogleMapLocationControl(google, this.map, this.getUserLocation);
 		document.getElementById('google-map-view').addEventListener('click', () => {
 			if (this.streetIsVisible()) {

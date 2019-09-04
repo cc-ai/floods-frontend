@@ -152,6 +152,12 @@ span.link {
     text-align: center;
 }
 
+#google-map-view .google-map-street-button {
+    margin-left: -10px;
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
 #google-map-view .google-map-geolocation-button,
 #google-zone-view .google-map-geolocation-button {
     width: 40px;
