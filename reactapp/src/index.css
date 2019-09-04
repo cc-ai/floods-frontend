@@ -78,6 +78,7 @@ span.link {
     margin-left: 0.5rem;
     height: 100%;
     pointer-events: none;
+    z-index: 1;
 }
 
 #search-form .autocomplete {
@@ -134,6 +135,7 @@ span.link {
     border-radius: 0.5rem;
 }
 
+#google-zone-view .google-map-geolocation-button,
 #google-map-view .google-map-street-button {
     font-weight: bold;
     font-size: 1rem;
@@ -147,6 +149,20 @@ span.link {
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
     cursor: pointer;
     text-align: center;
+}
+
+#google-zone-view .google-map-geolocation-button {
+    width: 40px;
+}
+
+#google-zone-view .google-map-geolocation-button path {
+    stroke: #666666;
+    fill: #666666;
+}
+
+#google-zone-view .google-map-geolocation-button:hover path {
+    stroke: black;
+    fill: black;
 }
 
 #google-map-view .google-map-street-button:hover {

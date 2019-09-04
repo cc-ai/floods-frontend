@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {AppContext} from "../contexts/AppContext";
+import {addGoogleMapLocationControl} from "../api/googleMapLocationControl";
 
 export class GoogleZoneView extends React.Component {
 	constructor(props) {
@@ -11,12 +12,7 @@ export class GoogleZoneView extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<div id="google-zone-view" className="mt-4"/>
-				<div className="text-right mb-4">
-					<span className="reload-user-location" onClick={this.props.onReload}>Relocate near me</span>
-				</div>
-			</div>
+			<div id="google-zone-view" className="mt-4"/>
 		);
 	}
 
@@ -45,8 +41,10 @@ export class GoogleZoneView extends React.Component {
 		const position = new google.maps.LatLng(this.props.latitude, this.props.longitude);
 		this.map = new google.maps.Map(document.getElementById('google-zone-view'), {
 			center: position,
-			zoom: 15
+			zoom: 15,
+			streetViewControl: false,
 		});
+		addGoogleMapLocationControl(google, this.map, this.props.onReload);
 		this.centerMap(position);
 	}
 
