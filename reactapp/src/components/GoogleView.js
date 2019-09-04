@@ -64,19 +64,18 @@ export class GoogleView extends React.Component {
 		});
 	}
 
-	markMapOn(position, noMarker) {
+	markMapOn(position) {
 		const google = this.context.google;
 		if (this.currentMarker) {
 			this.currentMarker.setMap(null);
 			this.currentMarker = null;
 		}
-		if (!noMarker)
-			this.currentMarker = new google.maps.Marker({position: position, map: this.map});
+		this.currentMarker = new google.maps.Marker({position: position, map: this.map});
 	}
 
-	centerMap(position, noMarker) {
+	centerMap(position) {
 		console.log(`Centering map to ${position.lat()} ; ${position.lng()}`);
-		this.markMapOn(position, noMarker);
+		this.markMapOn(position);
 		this.map.panTo(position);
 	}
 
@@ -199,9 +198,12 @@ export class GoogleView extends React.Component {
 					const lng = coords.longitude;
 					console.log(`Geolocation returned ${lat} ${lng}`);
 					const position = new this.context.google.maps.LatLng(lat, lng);
-					this.centerMap(position, true);
-					this.currentAddress = '';
-					this.props.onSelect('');
+					this.centerMap(position);
+					this.context.locationToAddress(position)
+						.then(address => {
+							this.currentAddress = address;
+							this.props.onSelect(address);
+						});
 				}
 			})
 			.catch(error => {
