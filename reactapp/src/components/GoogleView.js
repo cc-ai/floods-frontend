@@ -27,6 +27,7 @@ export class GoogleView extends React.Component {
 		this.centerMap = this.centerMap.bind(this);
 		this.centerStreet = this.centerStreet.bind(this);
 		this.getUserLocation = this.getUserLocation.bind(this);
+		this.onMapClick = this.onMapClick.bind(this);
 	}
 
 	render() {
@@ -93,7 +94,18 @@ export class GoogleView extends React.Component {
 				center: position,
 				radius: 300, // in meters
 			});
+			this.currentCircle.addListener('click', this.onMapClick);
 		}
+	}
+
+	onMapClick(ev) {
+		const position = ev.latLng;
+		this.centerMap(position);
+		this.context.locationToAddress(position)
+			.then(address => {
+				this.currentAddress = address;
+				this.props.onSelect(address)
+			});
 	}
 
 	centerMap(position) {
@@ -116,15 +128,7 @@ export class GoogleView extends React.Component {
 			streetViewControl: false,
 		});
 		this.places = new google.maps.places.PlacesService(this.map);
-		this.map.addListener('click', (ev) => {
-			const position = ev.latLng;
-			this.centerMap(position);
-			this.context.locationToAddress(position)
-				.then(address => {
-					this.currentAddress = address;
-					this.props.onSelect(address)
-				});
-		});
+		this.map.addListener('click', this.onMapClick);
 		this.map.getStreetView().addListener('position_changed', () => {
 			if (this.streetPositionIsManual) {
 				return;
