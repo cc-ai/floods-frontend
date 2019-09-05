@@ -41,7 +41,11 @@ export class Home extends React.Component {
 							Visualizing the consequences of Climate Change
 						</div>
 						<div className="my-5">
-							<AddressManager guessLocation={true} onSubmitted={this.onSubmitted}/>
+							<AddressManager guessLocation={true}
+											onSubmitted={this.onSubmitted}
+											showMap={true}
+											guessInitialLocation={true}
+											displayUserRegions={true}/>
 						</div>
 						<div>
 							<button className="learn-more btn btn-secondary p-3 mb-4"

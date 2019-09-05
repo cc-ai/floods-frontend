@@ -5,6 +5,10 @@ import {addGoogleMapLocationControl} from "../api/googleMapLocationControl";
 import {CancelablePromise} from "../api/cancelablePromise";
 import {geotag} from "../api/geotag";
 
+function samePositions(pos1, pos2) {
+	return pos1.lat() === pos2.lat() && pos1.lng() === pos2.lng();
+}
+
 export class GoogleView extends React.Component {
 	constructor(props) {
 		super(props);
@@ -14,6 +18,9 @@ export class GoogleView extends React.Component {
 		this.map = null;
 		this.places = null;
 		this.defaultPosition = null;
+		this.currentCircle = null;
+		this.geolocation = null;
+		this.userAddress = null;
 		this.displayStreet = this.displayStreet.bind(this);
 		this.displayMap = this.displayMap.bind(this);
 		this.markMapOn = this.markMapOn.bind(this);
@@ -71,6 +78,22 @@ export class GoogleView extends React.Component {
 			this.currentMarker = null;
 		}
 		this.currentMarker = new google.maps.Marker({position: position, map: this.map});
+		if (this.currentCircle) {
+			this.currentCircle.setMap(null);
+			this.currentCircle = null;
+		}
+		if (this.props.displayUserRegions && samePositions(position, this.geolocation)) {
+			this.currentCircle = new google.maps.Circle({
+				strokeColor: '#00FF00',
+				strokeOpacity: 0.8,
+				strokeWeight: 2,
+				fillColor: '#00FF00',
+				fillOpacity: 0.35,
+				map: this.map,
+				center: position,
+				radius: 300, // in meters
+			});
+		}
 	}
 
 	centerMap(position) {
@@ -157,13 +180,17 @@ export class GoogleView extends React.Component {
 				})
 		} else {
 			this._createMapOn(defaultPosition);
-			this.context.locationToAddress(defaultPosition)
-				.then(address => {
-					this.currentAddress = address;
-					this.centerMap(defaultPosition);
-					this.centerStreet(defaultPosition);
-					this.displayMap();
-				});
+			this.displayMap();
+			if (this.props.guessInitialLocation) {
+				this.getUserLocation();
+			} else {
+				this.centerMap(defaultPosition);
+				this.centerStreet(defaultPosition);
+				this.context.locationToAddress(defaultPosition)
+					.then(address => {
+						this.currentAddress = address;
+					});
+			}
 		}
 	}
 
@@ -194,14 +221,14 @@ export class GoogleView extends React.Component {
 			.promise
 			.then((coords) => {
 				if (!this.streetIsVisible()) {
-					const lat = coords.latitude;
-					const lng = coords.longitude;
-					console.log(`Geolocation returned ${lat} ${lng}`);
-					const position = new this.context.google.maps.LatLng(lat, lng);
+					console.log(`Geolocation returned ${coords.latitude} ${coords.longitude}`);
+					const position = new this.context.google.maps.LatLng(coords.latitude, coords.longitude);
+					this.geolocation = position;
 					this.centerMap(position);
 					this.context.locationToAddress(position)
 						.then(address => {
 							this.currentAddress = address;
+							this.userAddress = address;
 							this.props.onSelect(address);
 						});
 				}
@@ -212,7 +239,8 @@ export class GoogleView extends React.Component {
 				} else if ("geolocationError" in error) {
 					console.error(`Geolocation error. ${error.geolocationError}`);
 				} else {
-					console.error(`Error when getting user location. ${error}`);
+					console.error(`Error when getting user location.`);
+					console.exception(error);
 				}
 			})
 			.finally(() => {
@@ -229,5 +257,7 @@ export class GoogleView extends React.Component {
 GoogleView.contextType = AppContext;
 GoogleView.propTypes = {
 	address: PropTypes.string.isRequired,
-	onSelect: PropTypes.func.isRequired
+	onSelect: PropTypes.func.isRequired,
+	guessInitialLocation: PropTypes.bool,
+	displayUserRegions: PropTypes.bool
 };

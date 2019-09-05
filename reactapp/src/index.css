@@ -128,14 +128,13 @@ span.link {
     font-size: 1.25rem;
 }
 
-#google-map-view, #google-zone-view {
+#google-map-view {
     width: 100%;
     height: 20rem;
     border: 1px solid gray;
     border-radius: 0.5rem;
 }
 
-#google-zone-view .google-map-geolocation-button,
 #google-map-view .google-map-geolocation-button,
 #google-map-view .google-map-street-button {
     font-weight: bold;
@@ -156,19 +155,16 @@ span.link {
     padding-right: 17px;
 }
 
-#google-map-view .google-map-geolocation-button,
-#google-zone-view .google-map-geolocation-button {
+#google-map-view .google-map-geolocation-button {
     width: 40px;
 }
 
-#google-map-view .google-map-geolocation-button path,
-#google-zone-view .google-map-geolocation-button path {
+#google-map-view .google-map-geolocation-button path {
     stroke: #666666;
     fill: #666666;
 }
 
-#google-map-view .google-map-geolocation-button:hover path,
-#google-zone-view .google-map-geolocation-button:hover path {
+#google-map-view .google-map-geolocation-button:hover path {
     stroke: black;
     fill: black;
 }

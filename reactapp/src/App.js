@@ -12,12 +12,13 @@ import Script from 'react-load-script';
 export class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.pageLoader = this.pageLoader.bind(this);
 		this.state = {
 			name: 'home',
 			body: <Home/>,
 			context: new AppContextInstance(null, null)
 		};
+		this.pageLoader = this.pageLoader.bind(this);
+		this.loadGoogleContext = this.loadGoogleContext.bind(this);
 	}
 
 	pageLoader(name, body) {
@@ -31,41 +32,43 @@ export class App extends React.Component {
 	render() {
 		return (
 			<AppContext.Provider value={this.state.context}>
-				<div className="container">
-					<div className="header row align-items-center">
-						<div className="logo col-md text-md-left">
-							<MenuLink nav={false} center={false}
-									  pageName={'home'} pageContent={<Home/>} currentPage={this.state.name}>
-								<Logo/>
-							</MenuLink>
+				{this.state.context.google ? (
+					<div className="container">
+						<div className="header row align-items-center">
+							<div className="logo col-md text-md-left">
+								<MenuLink nav={false} center={false}
+										  pageName={'home'} pageContent={<Home/>} currentPage={this.state.name}>
+									<Logo/>
+								</MenuLink>
+							</div>
+							<div className="menu col-md">
+								<nav className="nav justify-content-end flex-column flex-md-row mt-3">
+									<MenuLink pageName={'home'} pageContent={<Home/>} currentPage={this.state.name}>
+										Home
+									</MenuLink>
+									<MenuLink pageName={'about'} pageContent={<About/>} currentPage={this.state.name}>
+										About
+									</MenuLink>
+									<MenuLink pageName={'how'} pageContent={<How/>} currentPage={this.state.name}>How it
+										works
+									</MenuLink>
+									<MenuLink pageName={'act'} pageContent={<Act/>} currentPage={this.state.name}>
+										What you can do
+									</MenuLink>
+									<MenuLink pageName={'contact'} pageContent={<Contact/>} currentPage={this.state.name}>
+										Contact
+									</MenuLink>
+								</nav>
+							</div>
 						</div>
-						<div className="menu col-md">
-							<nav className="nav justify-content-end flex-column flex-md-row mt-3">
-								<MenuLink pageName={'home'} pageContent={<Home/>} currentPage={this.state.name}>
-									Home
-								</MenuLink>
-								<MenuLink pageName={'about'} pageContent={<About/>} currentPage={this.state.name}>
-									About
-								</MenuLink>
-								<MenuLink pageName={'how'} pageContent={<How/>} currentPage={this.state.name}>How it
-									works
-								</MenuLink>
-								<MenuLink pageName={'act'} pageContent={<Act/>} currentPage={this.state.name}>
-									What you can do
-								</MenuLink>
-								<MenuLink pageName={'contact'} pageContent={<Contact/>} currentPage={this.state.name}>
-									Contact
-								</MenuLink>
-							</nav>
+						<div>
+							{this.state.body}
 						</div>
 					</div>
-					<div>
-						{this.state.body}
-					</div>
-					<Script async defer
-							url={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
-							onLoad={() => this.loadGoogleContext()}/>
-				</div>
+				) : ''}
+				<Script async defer
+						url={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`}
+						onLoad={this.loadGoogleContext}/>
 			</AppContext.Provider>
 		);
 	}

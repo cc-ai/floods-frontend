@@ -4,10 +4,7 @@ import {Search} from "./search";
 import {promiseGanify} from "../api/ganify";
 import {AppContext} from "../contexts/AppContext";
 import {GoogleView} from "./GoogleView";
-import {GoogleZoneView} from "./GoogleZoneView";
 import {RingLoader} from "react-spinners";
-import {geotag} from "../api/geotag";
-import {CancelablePromise} from "../api/cancelablePromise";
 
 
 export class AddressManager extends React.Component {
@@ -25,14 +22,12 @@ export class AddressManager extends React.Component {
 			wait: false,
 			// address manager
 			selectedAddress: initialAddress,
-			geolocation: null,
 		};
 		this.onSearchChange = this.onSearchChange.bind(this);
 		this.onSelectSearchAddress = this.onSelectSearchAddress.bind(this);
 		this.onSearchSubmit = this.onSearchSubmit.bind(this);
 		this.onSelectMapAddress = this.onSelectMapAddress.bind(this);
 		this.onSubmitted = this.onSubmitted.bind(this);
-		this.getUserLocation = this.getUserLocation.bind(this);
 	}
 
 	setState(state) {
@@ -83,57 +78,12 @@ export class AddressManager extends React.Component {
 				</div>
 				{this.props.showMap ?
 					<GoogleView address={this.state.selectedAddress}
-								onSelect={this.onSelectMapAddress}/>
-					: ''}
-				{this.state.geolocation ?
-					<GoogleZoneView latitude={this.state.geolocation.latitude}
-									longitude={this.state.geolocation.longitude}
-									onReload={this.getUserLocation}/>
+								onSelect={this.onSelectMapAddress}
+								guessInitialLocation={this.props.guessInitialLocation}
+								displayUserRegions={this.props.displayUserRegions}/>
 					: ''}
 			</div>
 		);
-	}
-
-	getUserLocation() {
-		if (this.cancelablePromise)
-			return;
-		this.cancelablePromise = new CancelablePromise(geotag());
-		this.cancelablePromise
-			.promise
-			.then((coords) => {
-				const lat = coords.latitude;
-				const lng = coords.longitude;
-				console.log(`Geolocation returned ${lat} ${lng}`);
-				return this.setState({geolocation: coords})
-					.then(() => this.context.locationToAddress(new this.context.google.maps.LatLng(lat, lng)));
-			})
-			.then(address => {
-				console.log(`Geolocated at ${address}`);
-				return this.onSelectMapAddress(address);
-			})
-			.catch(error => {
-				if ('isCanceled' in error) {
-					console.error('Geolocation was canceled.');
-				} else if ("geolocationError" in error) {
-					console.error(`Geolocation error. ${error.geolocationError}`);
-				} else {
-					console.error(`Error when converting geolocation to address. ${error}`);
-				}
-			})
-			.finally(() => {
-				this.cancelablePromise = null;
-			});
-	}
-
-	componentDidMount() {
-		if (this.props.guessLocation) {
-			this.getUserLocation();
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.cancelablePromise)
-			this.cancelablePromise.cancel();
 	}
 }
 
@@ -141,6 +91,7 @@ AddressManager.propTypes = {
 	onSubmitted: PropTypes.func,
 	initialAddress: PropTypes.string,
 	showMap: PropTypes.bool,
-	guessLocation: PropTypes.bool,
+	guessInitialLocation: PropTypes.bool,
+	displayUserRegions: PropTypes.bool
 };
 AddressManager.contextType = AppContext;
