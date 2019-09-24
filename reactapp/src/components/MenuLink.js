@@ -9,12 +9,14 @@ export class MenuLink extends React.Component {
 			classNames.push('nav-link');
 		if (this.props.center || this.props.center === undefined)
 			classNames.push('text-center');
-		if (this.props.pageName === this.props.currentPage)
-			return classNames.length ? <span className={classNames.join(' ')}>{this.props.children}</span> : this.props.children;
+		if (this.props.pageContent.type.name === this.props.currentPage)
+			return classNames.length ?
+				<span className={classNames.join(' ')}>{this.props.children}</span>
+				: this.props.children;
 		classNames.push('link');
 		return (
 			<span className={classNames.join(' ')}
-				  onClick={() => this.context.pageLoader(this.props.pageName, this.props.pageContent)}>
+				  onClick={() => this.context.pageLoader(this.props.pageContent)}>
                 {this.props.children}
             </span>
 		);
@@ -22,7 +24,6 @@ export class MenuLink extends React.Component {
 }
 
 MenuLink.propTypes = {
-	pageName: PropTypes.string.isRequired,
 	pageContent: PropTypes.object.isRequired,
 	currentPage: PropTypes.string.isRequired,
 	nav: PropTypes.bool,
