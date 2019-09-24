@@ -48,6 +48,7 @@ span.link {
 	background-color: rgb(230, 230, 230);
 	border-color: rgb(230, 230, 230);
 	color: rgb(100, 100, 100);
+	position: relative;
 }
 
 .home button.learn-more:hover {
