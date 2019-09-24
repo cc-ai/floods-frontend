@@ -52,6 +52,18 @@ export class App extends React.Component {
 		);
 	}
 
+	navMenu(title, content) {
+		const active = content.type.name === this.getPageName();
+		return (
+			<li className={`nav-item ${active ? 'active' : ''}`}>
+				<span className="nav-link link" onClick={() => this.pageLoader(content)}>
+					{title}
+					{active ? (<span className="sr-only">(current)</span>) : ''}
+				</span>
+			</li>
+		);
+	}
+
 	render() {
 		return (
 			<AppContext.Provider value={{
@@ -61,35 +73,41 @@ export class App extends React.Component {
 				autocomplete: this.state.autocomplete
 			}}>
 				<div className="container">
-					<div className="header row align-items-center">
-						<div className="logo col-md text-center text-md-left">
+					<nav className="navbar navbar-expand-lg navbar-light">
+						<div className="logo navbar-brand">
 							<MenuLink nav={false} center={false} pageContent={<Home/>} currentPage={this.getPageName()}>
 								<Logo/>
 							</MenuLink>
 						</div>
-						<div className="menu col-md text-center text-md-right align-items-center mt-md-0 mt-5">
-							<div className="dropdown">
-								<button className="btn btn-outline-secondary dropdown-toggle btn-block" type="button"
-										id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="false">
-									Climate Change AI
-								</button>
-								<div className="dropdown-menu dropdown-menu-right w-100"
-									 aria-labelledby="dropdownMenuButton">
-									{this.menu('Home', <Home/>)}
-									{this.menu('About the project', <About/>)}
-									{this.menu('How it works', <HowItWorks/>)}
-									{this.menu('What you can do', <WhatYouCanDo/>)}
-									{this.menu('Contact Us', <Contact/>)}
-									{this.menu('Flood Models', <FloodModels/>)}
-									{this.menu('About the Machine Learning We Use', <AboutMachineLearning/>)}
-									{this.menu('How Climate Change Causes Flooding', <HowClimateChangeCausesFlooding/>)}
-									{this.menu('Glossary', <Glossary/>)}
-									{this.menu('Related Efforts', <RelatedEfforts/>)}
-								</div>
-							</div>
+						<button className="navbar-toggler" type="button" data-toggle="collapse"
+								data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+								aria-expanded="false" aria-label="Toggle navigation">
+							<span className="navbar-toggler-icon"/>
+						</button>
+						<div className="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul className="navbar-nav ml-auto">
+								{this.navMenu('Home', <Home/>)}
+								<li className="nav-item dropdown">
+									<span className="nav-link dropdown-toggle link" id="navbarDropdown"
+									   role="button" data-toggle="dropdown" aria-haspopup="true"
+									   aria-expanded="false">
+										About
+									</span>
+									<div className="dropdown-menu" aria-labelledby="navbarDropdown">
+										{this.menu('About the project', <About/>)}
+										{this.menu('Flood Models', <FloodModels/>)}
+										{this.menu('About the Machine Learning We Use', <AboutMachineLearning/>)}
+										{this.menu('How Climate Change Causes Flooding', <HowClimateChangeCausesFlooding/>)}
+										{this.menu('Glossary', <Glossary/>)}
+										{this.menu('Related Efforts', <RelatedEfforts/>)}
+									</div>
+								</li>
+								{this.navMenu('How it works', <HowItWorks/>)}
+								{this.navMenu('What you can do', <WhatYouCanDo/>)}
+								{this.navMenu('Contact Us', <Contact/>)}
+							</ul>
 						</div>
-					</div>
+					</nav>
 					<div>
 						{this.state.body}
 					</div>

@@ -168,6 +168,12 @@ span.link {
 	}
 }
 
+.navbar {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 1rem;
+}
+
 /* -md- */
 @media (min-width: 768px) {
 	.header .menu .nav-link {
