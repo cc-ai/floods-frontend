@@ -88,3 +88,4 @@ export class WhatYouCanDo extends React.Component {
 }
 
 WhatYouCanDo.contextType = AppContext;
+WhatYouCanDo.pageName = 'WhatYouCanDo';

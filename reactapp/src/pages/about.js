@@ -32,3 +32,4 @@ export class About extends React.Component {
 }
 
 About.contextType = AppContext;
+About.pageName = 'About';

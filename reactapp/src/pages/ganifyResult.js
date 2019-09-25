@@ -138,3 +138,4 @@ GanifyResult.propTypes = {
 	initialResult: PropTypes.object
 };
 GanifyResult.contextType = AppContext;
+GanifyResult.pageName = 'GanifyResult';

@@ -86,3 +86,4 @@ export class Glossary extends React.Component {
 }
 
 Glossary.contextType = AppContext;
+Glossary.pageName = 'Glossary';

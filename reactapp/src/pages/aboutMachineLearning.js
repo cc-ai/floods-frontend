@@ -49,3 +49,4 @@ export class AboutMachineLearning extends React.Component {
 }
 
 AboutMachineLearning.contextType = AppContext;
+AboutMachineLearning.pageName = 'AboutMachineLearning';

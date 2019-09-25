@@ -63,3 +63,4 @@ export class Home extends React.Component {
 }
 
 Home.contextType = AppContext;
+Home.pageName = 'Home';

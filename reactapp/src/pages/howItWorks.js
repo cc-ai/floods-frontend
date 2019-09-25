@@ -38,3 +38,4 @@ export class HowItWorks extends React.Component {
 }
 
 HowItWorks.contextType = AppContext;
+HowItWorks.pageName = 'HowItWorks';

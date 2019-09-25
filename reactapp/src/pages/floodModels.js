@@ -37,3 +37,4 @@ export class FloodModels extends React.Component {
 }
 
 FloodModels.contextType = AppContext;
+FloodModels.pageName = 'FloodModels';

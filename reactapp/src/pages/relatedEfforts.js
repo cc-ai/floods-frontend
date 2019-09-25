@@ -28,3 +28,4 @@ export class RelatedEfforts extends React.Component {
 }
 
 RelatedEfforts.contextType = AppContext;
+RelatedEfforts.pageName = 'RelatedEfforts';

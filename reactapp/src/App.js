@@ -13,6 +13,7 @@ import {AppContext} from "./contexts/AppContext";
 import {MenuLink} from "./components/MenuLink";
 import Script from 'react-load-script';
 import {Glossary} from "./pages/glossary";
+import {getPageName} from "./api/utils";
 
 export class App extends React.Component {
 	constructor(props) {
@@ -28,7 +29,7 @@ export class App extends React.Component {
 	}
 
 	getPageName() {
-		return this.state.body.type.name;
+		return getPageName(this.state.body);
 	}
 
 	pageLoader(body) {
@@ -43,7 +44,7 @@ export class App extends React.Component {
 	}
 
 	menu(title, content) {
-		const active = content.type.name === this.getPageName();
+		const active = getPageName(content) === this.getPageName();
 		return (
 			<button className={`dropdown-item ${active ? 'disabled' : ''}`}
 					onClick={() => this.pageLoader(content)}>
@@ -53,7 +54,7 @@ export class App extends React.Component {
 	}
 
 	navMenu(title, content) {
-		const active = content.type.name === this.getPageName();
+		const active = getPageName(content) === this.getPageName();
 		return (
 			<li className={`nav-item ${active ? 'active' : ''}`}>
 				<span className="nav-link link" onClick={() => this.pageLoader(content)}>

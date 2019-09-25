@@ -16,3 +16,4 @@ export class Contact extends React.Component {
 }
 
 Contact.contextType = AppContext;
+Contact.pageName = 'Contact';

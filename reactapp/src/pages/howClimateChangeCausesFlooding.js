@@ -35,3 +35,4 @@ export class HowClimateChangeCausesFlooding extends React.Component {
 }
 
 HowClimateChangeCausesFlooding.contextType = AppContext;
+HowClimateChangeCausesFlooding.pageName = 'HowClimateChangeCausesFlooding';
