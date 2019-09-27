@@ -6,7 +6,7 @@ import {Content} from "./content";
 export class StaticPage extends React.Component {
 	render() {
 		return (
-			<Content className={this.props.name}>
+			<Content className={`${this.props.name} static-page`}>
 				<Helmet>
 					<title>{this.props.title} | CC-AI</title>
 				</Helmet>

@@ -1,206 +1,227 @@
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+	"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+	sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+	monospace;
 }
 
 body, a {
-    color: gray;
+	color: gray;
 }
 
 a:hover, span.link:hover {
-    color: rgb(30, 30, 30);
+	color: rgb(30, 30, 30);
 }
 
-.logo {
-    padding-top: 1rem;
+.header {
+	padding-top: 1rem;
 }
 
 .logo img {
-    max-height: 69px;
+	max-height: 69px;
 }
 
 span.link {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .home .top-text {
-    font-size: 2.5rem;
-    line-height: 2.5rem;
-    font-weight: 300;
+	font-size: 2.5rem;
+	line-height: 2.5rem;
+	font-weight: 300;
 }
 
 .home .right-text {
-    line-height: 2rem;
+	line-height: 2rem;
+	position: relative;
+	top: -0.5rem;
 }
 
 .home button.learn-more {
-    background-color: rgb(230, 230, 230);
-    border-color: rgb(230, 230, 230);
-    color: rgb(100, 100, 100);
+	background-color: rgb(230, 230, 230);
+	border-color: rgb(230, 230, 230);
+	color: rgb(100, 100, 100);
+	position: relative;
 }
 
 .home button.learn-more:hover {
-    background-color: rgb(220, 220, 220);
-    border-color: rgb(220, 220, 220);
-    color: rgb(100, 100, 100);
+	background-color: rgb(220, 220, 220);
+	border-color: rgb(220, 220, 220);
+	color: rgb(100, 100, 100);
 }
 
 #search-form input {
-    height: 100%;
-    border-color: gray;
-    border-radius: 0.5rem;
-    padding: 1rem 1rem 1rem 2rem;
+	height: 100%;
+	border-color: gray;
+	border-radius: 0.5rem;
+	padding: 1rem 1rem 1rem 2rem;
 }
 
 #search-form .octicon {
-    position: absolute;
-    width: 1rem;
-    margin-left: 0.5rem;
-    height: 100%;
-    pointer-events: none;
+	position: absolute;
+	width: 1rem;
+	margin-left: 0.5rem;
+	height: 100%;
+	pointer-events: none;
 }
 
 #search-form .autocomplete {
-    position: relative;
-    height: 100%;
+	position: relative;
+	height: 100%;
 }
 
 .autocomplete-items {
-    position: absolute;
-    border: 1px solid #d4d4d4;
-    border-bottom: none;
-    z-index: 99;
-    /*position the autocomplete items to be the same width as the container:*/
-    top: 100%;
-    left: 0;
-    right: 0;
+	position: absolute;
+	border: 1px solid #d4d4d4;
+	border-bottom: none;
+	z-index: 99;
+	/*position the autocomplete items to be the same width as the container:*/
+	top: 100%;
+	left: 0;
+	right: 0;
 }
 
 .autocomplete-items div {
-    padding: 10px;
-    cursor: pointer;
-    background-color: #fff;
-    border-bottom: 1px solid #d4d4d4;
+	padding: 10px;
+	cursor: pointer;
+	background-color: #fff;
+	border-bottom: 1px solid #d4d4d4;
 }
 
 .autocomplete-items div:hover {
-    /*when hovering an item:*/
-    background-color: #e9e9e9;
+	/*when hovering an item:*/
+	background-color: #e9e9e9;
 }
 
 .autocomplete-active {
-    /*when navigating through the items using the arrow keys:*/
-    background-color: DodgerBlue !important;
-    color: #ffffff;
+	/*when navigating through the items using the arrow keys:*/
+	background-color: DodgerBlue !important;
+	color: #ffffff;
 }
 
 .error-message {
-    font-weight: bold;
-    color: red;
-    text-align: center;
+	font-weight: bold;
+	color: red;
+	text-align: center;
 }
 
 .warning-message {
-    font-weight: bold;
-    color: orange;
-    text-align: center;
-    font-size: 1.25rem;
+	font-weight: bold;
+	color: orange;
+	font-size: 1.25rem;
 }
 
 #google-map-view {
-    width: 100%;
-    height: 20rem;
-    border: 1px solid gray;
-    border-radius: 0.5rem;
+	width: 100%;
+	height: 20rem;
+	border: 1px solid gray;
+	border-radius: 0.5rem;
 }
 
 #google-map-view .google-map-street-button {
-    font-weight: bold;
-    font-size: 1rem;
-    background-color: white;
-    margin: 10px;
-    height: 40px;
-    line-height: 40px;
-    padding-left: 10px;
-    padding-right: 10px;
-    color: black;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-    cursor: pointer;
-    text-align: center;
+	font-weight: bold;
+	font-size: 1rem;
+	background-color: white;
+	margin: 10px;
+	height: 40px;
+	line-height: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: black;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+	cursor: pointer;
+	text-align: center;
 }
 
 #google-map-view .google-map-street-button:hover {
-    background-color: rgb(225, 225, 225);
+	background-color: rgb(225, 225, 225);
 }
 
 .contact code {
-    color: black;
+	color: black;
 }
 
-.contact a, .about a {
-    color: black;
+.static-page a, .static-page span.link {
+	color: black;
+}
+
+.static-page span.link:hover {
+	text-decoration: underline;
 }
 
 /* smaller than -md- */
 @media (max-width: 768px) {
-    #search-form button {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
+	#search-form button {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
 
-    .home button.learn-more {
-        width: 100%;
-    }
+	.home button.learn-more {
+		width: 100%;
+	}
+}
+
+.navbar {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 1rem;
 }
 
 /* -md- */
 @media (min-width: 768px) {
-    .header .menu .nav-link {
-        padding-top: 0;
-        padding-bottom: 0;
-        line-height: 1rem;
-    }
+	.header .menu .nav-link {
+		padding-top: 0;
+		padding-bottom: 0;
+		line-height: 1rem;
+	}
 
-    .header .menu .nav-link + .nav-link {
-        border-left: 2px solid rgb(200, 200, 200);
-    }
+	.header .menu .nav-link + .nav-link {
+		border-left: 2px solid rgb(200, 200, 200);
+	}
+}
+
+.menu .dropdown-item {
+	white-space: normal;
+}
+
+.menu .dropdown-item:active {
+	background-color: #6c757d;
 }
 
 .metadata {
-    font-size: 0.9rem;
+	font-size: 0.9rem;
 }
 
 .metadata-title, .metadata-value {
-    padding: 0.3rem 0.1rem;
+	padding: 0.3rem 0.1rem;
 }
 
 .metadata-title {
-    background-color: rgb(240, 240, 240);
-    font-weight: bold;
+	background-color: rgb(240, 240, 240);
+	font-weight: bold;
 }
 
 .metadata-value {
-    background-color: rgb(250, 250, 250);
+	background-color: rgb(250, 250, 250);
 }
 
 .search-waiting-no {
-    opacity: 0;
-    max-height: 0;
-    padding: 0;
-    transition: opacity 500ms ease-in-out, padding 300ms ease-in-out 300ms, max-height 300ms ease-in-out 300ms;
+	opacity: 0;
+	max-height: 0;
+	padding: 0;
+	transition: opacity 500ms ease-in-out, padding 300ms ease-in-out 300ms, max-height 300ms ease-in-out 300ms;
 }
+
 .search-waiting-yes {
-    opacity: 1;
-    max-height: 10rem;
-    padding: 1.5rem 0.5rem 0 0.5rem;
-    transition: opacity 500ms ease-in-out, max-height 500ms ease-in-out, padding 500ms ease-in-out;
+	opacity: 1;
+	max-height: 10rem;
+	padding: 1.5rem 0.5rem 0 0.5rem;
+	transition: opacity 500ms ease-in-out, max-height 500ms ease-in-out, padding 500ms ease-in-out;
 }

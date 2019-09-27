@@ -58,7 +58,10 @@ export class AddressManager extends React.Component {
 			.then(() => this.setState({wait: true}))
 			.then(() => promiseGanify(address))
 			.then(result => this.setState({wait: false}).then(() => this.onSubmitted(address, result)))
-			.catch(error => this.setState({wait: false, error: `Image processing error: ${error}`}).then(() => this.onSubmitted(address, null)));
+			.catch(error => this.setState({
+				wait: false,
+				error: `Image processing error: ${error}`
+			}).then(() => this.onSubmitted(address, null)));
 	}
 
 	render() {
@@ -73,7 +76,9 @@ export class AddressManager extends React.Component {
 					<div>
 						<RingLoader css={{margin: "auto"}}/>
 					</div>
-					<div className="mt-3"><strong>We are computing predictions. This may take some seconds ...</strong></div>
+					<div className="mt-3">
+						<strong>We are computing predictions. This may take some seconds ...</strong>
+					</div>
 				</div>
 				{this.props.showMap ?
 					<GoogleView address={this.state.selectedAddress}
