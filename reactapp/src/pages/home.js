@@ -55,8 +55,8 @@ export class Home extends React.Component {
 					</div>
 					<div className="col-md-5 text-justify my-5">
 						<div className="right-text">
-							Enter a location of your choice and we will use Artificial Intelligence to show you
-							what it will look like in 2050, based on the predictions made by climate models.
+							Enter a location of your choice and see how it could look like in 2050,
+							based on the predictions made by climate models.
 						</div>
 					</div>
 				</div>

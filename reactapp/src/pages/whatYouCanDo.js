@@ -69,17 +69,16 @@ export class WhatYouCanDo extends React.Component {
 				</p>
 				<p>More resources:</p>
 				<ul>
-					<li><ExternalLink href={"https://www.drawdown.org/"}>
-						Project Drawdown
-					</ExternalLink></li>
-					<li><ExternalLink href={"https://www.ipcc.ch/"}>
-						IPCC
+					<li>The Intergovernmental Panel on Climate Change reports - <ExternalLink href={"https://www.ipcc.ch/"}>
+						IPCC website
 					</ExternalLink></li>
 					<li><ExternalLink href={"https://climateatlas.ca/"}>
 						Climate Change Atlas of Canada
-					</ExternalLink></li>
-					<li><ExternalLink href={"https://en.wikipedia.org/wiki/Individual_action_on_climate_change"}>
-						Wikipedia
+					</ExternalLink> - presenting the impacts of climate change in Canada</li>
+					<li><ExternalLink href={"https://www.drawdown.org/"}>Project Drawdown</ExternalLink> - a research
+						organization that reviews, analyses, and identifies the most viable global climate solutions.</li>
+					<li>Individual action on climate change - <ExternalLink href={"https://en.wikipedia.org/wiki/Individual_action_on_climate_change"}>
+						Wikipedia page
 					</ExternalLink></li>
 				</ul>
 			</StaticPage>
