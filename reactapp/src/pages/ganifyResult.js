@@ -93,8 +93,8 @@ export class GanifyResult extends React.Component {
 										around 2050.
 									</p>
 									<p>
-										This projection is based on the ‘Business as usual’ scenario
-										(3 degrees warming). But this isn’t guaranteed to happen!
+										This projection is based on the ‘no change’ scenario (3 degrees warming).
+										But you can change this!
 										Click <span className="link" onClick={() => pageLoader(<WhatYouCanDo/>)}>here
 									</span> to learn what you can do to fight climate change!
 									</p>

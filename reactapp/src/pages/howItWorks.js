@@ -21,8 +21,9 @@ export class HowItWorks extends React.Component {
 					<li>
 						<strong>The Generative Adversarial Network:</strong> generative adversarial networks, or GANs,
 						are a type of machine learning system that is made from two neural networks, which are
-						competing with each other : one tries to fool the other, and the other tries to not let
-						itself be fooled. We harness GANs to transform images of non-flooded locations to flooded
+						competing with each other : one tries to generate plausible images to fool the other.
+						The other tries to differentiate real and generated examples, and not let itself be fooled.
+						We harness GANs to transform images of non-flooded locations to flooded
 						ones - click <span className="link" onClick={() => this.context.pageLoader(
 						<AboutMachineLearning/>)}>here</span> to find out how!
 					</li>
