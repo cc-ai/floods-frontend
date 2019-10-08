@@ -3,6 +3,7 @@ import {AppContext} from "../contexts/AppContext";
 import {StaticPage} from "../components/StaticPage";
 import {ExternalLink} from "../components/ExternalLink";
 import {Glossary} from "./glossary";
+import {InternalLink} from "../components/internalLink";
 
 export class HowClimateChangeCausesFlooding extends React.Component {
 	render() {
@@ -15,7 +16,7 @@ export class HowClimateChangeCausesFlooding extends React.Component {
 					surges and more flooding.
 				</p>
 				<p>
-					Click <span className="link" onClick={() => this.context.pageLoader(<Glossary/>)}>here</span> to
+					Click <InternalLink page={Glossary}>here</InternalLink> to
 					learn about key terms and concepts linked to climate change.
 				</p>
 				<p>To learn more about changing flood patterns and flood predictions, check out the following links:</p>

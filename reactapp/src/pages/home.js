@@ -5,8 +5,10 @@ import {Helmet} from 'react-helmet-async';
 import {Content} from "../components/content";
 import {AddressManager} from "../components/AddressManager";
 import {GanifyResult} from "./ganifyResult";
+import {Link, withRouter} from 'react-router-dom';
+import {getPageLink} from "../api/utils";
 
-export class Home extends React.Component {
+export class HomeComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onSubmitted = this.onSubmitted.bind(this);
@@ -17,19 +19,23 @@ export class Home extends React.Component {
 	}
 
 	onSubmitted(address, result) {
-		const pageLoader = this.context.pageLoader;
 		if (result) {
 			const header = 'data:application/json;base64,';
 			result = JSON.parse(atob(result.substr(header.length)));
-			pageLoader(<GanifyResult initialAddress={address} initialResult={result}/>);
+			this.props.history.push(getPageLink(GanifyResult), {
+				initialAddress: address,
+				initialResult: result
+			});
 		} else {
-			pageLoader(<GanifyResult initialAddress={address} initialResult={null}/>);
+			this.props.history.push(getPageLink(GanifyResult), {
+				initialAddress: address,
+				initialResult: {}
+			});
 		}
 		return true;
 	}
 
 	render() {
-		const pageLoader = this.context.pageLoader;
 		return (
 			<Content className="home">
 				<Helmet>
@@ -47,10 +53,9 @@ export class Home extends React.Component {
 											displayUserRegions={true}/>
 						</div>
 						<div>
-							<button className="learn-more btn btn-secondary p-3 mb-4"
-									onClick={() => pageLoader(<HowItWorks/>)}>
+							<Link to={getPageLink(HowItWorks)} className="learn-more btn btn-secondary p-3 mb-4">
 								Learn more about the science
-							</button>
+							</Link>
 						</div>
 					</div>
 					<div className="col-md-5 text-justify my-5">
@@ -65,5 +70,9 @@ export class Home extends React.Component {
 	}
 }
 
-Home.contextType = AppContext;
-Home.pageName = 'Home';
+HomeComponent.contextType = AppContext;
+HomeComponent.pageName = 'Home';
+HomeComponent.pageLink = '/';
+
+const Home = withRouter(HomeComponent);
+export {Home};

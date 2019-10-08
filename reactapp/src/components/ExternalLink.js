@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 export class ExternalLink extends React.Component {
 	render() {
-		return (<a target="_blank" rel="noopener noreferrer" href={this.props.href}>{this.props.children}</a>);
+		return (<a className="external-link"
+				   target="_blank" rel="noopener noreferrer"
+				   href={this.props.href}>{this.props.children}</a>);
 	}
 }
 
