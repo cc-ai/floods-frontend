@@ -1,3 +1,7 @@
+export function stringToBase64(str) {
+	return btoa(encodeURIComponent(str));
+}
+
 export function getPageName(component) {
 	return component.pageName;
 }

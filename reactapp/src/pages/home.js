@@ -5,8 +5,9 @@ import {Helmet} from 'react-helmet-async';
 import {Content} from "../components/content";
 import {AddressManager} from "../components/AddressManager";
 import {GanifyResult} from "./ganifyResult";
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {getPageLink} from "../api/utils";
+import {InternalLink} from "../components/internalLink";
 
 export class HomeComponent extends React.Component {
 	constructor(props) {
@@ -53,9 +54,9 @@ export class HomeComponent extends React.Component {
 											displayUserRegions={true}/>
 						</div>
 						<div>
-							<Link to={getPageLink(HowItWorks)} className="learn-more btn btn-secondary p-3 mb-4">
+							<InternalLink page={HowItWorks} className="learn-more btn btn-secondary p-3 mb-4">
 								Learn more about the science
-							</Link>
+							</InternalLink>
 						</div>
 					</div>
 					<div className="col-md-5 text-justify my-5">

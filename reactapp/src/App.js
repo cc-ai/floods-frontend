@@ -5,7 +5,8 @@ import {RelatedEfforts} from "./pages/relatedEfforts";
 import {AppContext, AppContextInstance} from "./contexts/AppContext";
 import Script from 'react-load-script';
 import {getPageLink, getPageName} from "./api/utils";
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {InternalLink} from "./components/internalLink";
 
 import {AboutMachineLearning} from "./pages/aboutMachineLearning";
 import {About} from "./pages/about";
@@ -44,9 +45,9 @@ export class App extends React.Component {
 	menu(title, content) {
 		const active = getPageName(content) === this.getPageName();
 		return (
-			<Link className={`dropdown-item ${active ? 'disabled' : ''}`} to={getPageLink(content)}>
+			<InternalLink className={`dropdown-item ${active ? 'disabled' : ''}`} page={content}>
 				{title}
-			</Link>
+			</InternalLink>
 		);
 	}
 
@@ -54,10 +55,10 @@ export class App extends React.Component {
 		const active = getPageName(content) === this.getPageName();
 		return (
 			<li className={`nav-item ${active ? 'active' : ''}`}>
-				<Link className="nav-link link" to={getPageLink(content)}>
+				<InternalLink className="nav-link link" page={content}>
 					{title}
 					{active ? (<span className="sr-only">(current)</span>) : ''}
-				</Link>
+				</InternalLink>
 			</li>
 		);
 	}
@@ -74,9 +75,9 @@ export class App extends React.Component {
 						<div className="container">
 							<nav className="navbar navbar-expand-lg navbar-light">
 								<div className="logo navbar-brand">
-									<Link to={getPageLink(Home)} className={'link'}>
+									<InternalLink page={Home} className={'link'} currentPageName={this.getPageName()}>
 										<Logo/>
-									</Link>
+									</InternalLink>
 								</div>
 								<button className="navbar-toggler" type="button" data-toggle="collapse"
 										data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

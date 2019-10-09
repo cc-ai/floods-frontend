@@ -178,7 +178,9 @@ span.link {
 	color: black;
 }
 
-span.link, a.external-link, a.internal-link {
+.static-page span.link,
+.static-page a.external-link,
+.static-page a.internal-link {
 	color: black;
 }
 

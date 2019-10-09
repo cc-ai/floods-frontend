@@ -17,8 +17,7 @@ export class Glossary extends React.Component {
 					of CO<sub>2</sub>’s effect as a greenhouse gas, meaning that it absorbs and emits infrared radiation
 					in the wavelength range emitted by the Earth, which contributes to the global warming of the planet
 					(<ExternalLink href={'https://www.ipcc.ch/site/assets/uploads/2018/02/WGIIAR5-AnnexII_FINAL.pdf'}>
-						IPCC Glossary
-					</ExternalLink>).
+					IPCC Glossary</ExternalLink>).
 				</p>
 				<hr/>
 

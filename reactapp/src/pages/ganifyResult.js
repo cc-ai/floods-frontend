@@ -8,8 +8,6 @@ import ReactCompareImage from 'react-compare-image';
 import {FloodModels} from "./floodModels";
 import {HowClimateChangeCausesFlooding} from "./howClimateChangeCausesFlooding";
 import {InternalLink} from "../components/internalLink";
-import {Link} from "react-router-dom";
-import {getPageLink} from "../api/utils";
 
 export class GanifyResult extends React.Component {
 	constructor(props) {
@@ -84,9 +82,9 @@ export class GanifyResult extends React.Component {
 										this location is not at risk of experiencing flooding.
 									</p>
 									<p>
+										{/* TODO Link to closest location that is flooded (if Mike or me (notoraptor) can do that) */}
 										That doesn’t mean that it won’t be affected!
 										Click <strong><em><u>here</u></em></strong> to find the closest
-										{/* TODO Link to closest location that is flooded (if Mike or me (notoraptor) can do that) */}
 										location that is liable to be flooded,
 										and <InternalLink page={HowClimateChangeCausesFlooding}>
 										here</InternalLink> to learn about how climate change will affect global weather
@@ -141,9 +139,11 @@ export class GanifyResult extends React.Component {
 							))}</div>
 						) : ''}
 						<div className="my-4">
-							<Link className="btn btn-secondary btn-lg px-5" to={getPageLink(WhatYouCanDo)}>
+							<InternalLink className="btn btn-secondary btn-lg px-5"
+										  page={WhatYouCanDo}
+										  removeDefaultClass={true}>
 								<strong>Make it change : have an impact</strong>
-							</Link>
+							</InternalLink>
 						</div>
 					</div>
 				</div>
@@ -153,6 +153,7 @@ export class GanifyResult extends React.Component {
 }
 
 GanifyResult.propTypes = {
+	// location may be sent by react-router
 	location: PropTypes.object,
 	initialAddress: PropTypes.string,
 	initialResult: PropTypes.object
