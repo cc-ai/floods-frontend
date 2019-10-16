@@ -44,14 +44,14 @@ span.link {
 	top: -0.5rem;
 }
 
-.home button.learn-more {
+.home .learn-more {
 	background-color: rgb(230, 230, 230);
 	border-color: rgb(230, 230, 230);
 	color: rgb(100, 100, 100);
 	position: relative;
 }
 
-.home button.learn-more:hover {
+.home .learn-more:hover {
 	background-color: rgb(220, 220, 220);
 	border-color: rgb(220, 220, 220);
 	color: rgb(100, 100, 100);
@@ -70,7 +70,7 @@ span.link {
 	margin-left: 0.5rem;
 	height: 100%;
 	pointer-events: none;
-    z-index: 1;
+	z-index: 1;
 }
 
 #search-form .autocomplete {
@@ -143,30 +143,31 @@ span.link {
 }
 
 #google-map-view .google-map-street-button {
-    margin-left: -10px;
-    padding-left: 17px;
-    padding-right: 17px;
+	margin-left: -10px;
+	padding-left: 17px;
+	padding-right: 17px;
 }
 
 #google-map-view .google-map-geolocation-button {
-    width: 40px;
+	width: 40px;
 }
 
 #google-map-view .google-map-geolocation-button path {
-    stroke: #666666;
-    fill: #666666;
+	stroke: #666666;
+	fill: #666666;
 }
 
 #google-map-view .google-map-geolocation-button:hover path {
-    stroke: black;
-    fill: black;
+	stroke: black;
+	fill: black;
 }
 
 .google-map-geolocation-button {
-    padding: 8px 8px;
+	padding: 8px 8px;
 }
+
 .google-map-geolocation-button svg {
-    display: block;
+	display: block;
 }
 
 #google-map-view .google-map-street-button:hover {
@@ -177,7 +178,9 @@ span.link {
 	color: black;
 }
 
-.static-page a, .static-page span.link {
+.static-page span.link,
+.static-page a.external-link,
+.static-page a.internal-link {
 	color: black;
 }
 
@@ -192,7 +195,7 @@ span.link {
 		margin-bottom: 1rem;
 	}
 
-	.home button.learn-more {
+	.home .learn-more {
 		width: 100%;
 	}
 }

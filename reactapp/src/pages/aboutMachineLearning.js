@@ -3,6 +3,7 @@ import {AppContext} from "../contexts/AppContext";
 import {StaticPage} from "../components/StaticPage";
 import {ExternalLink} from "../components/ExternalLink";
 import {RelatedEfforts} from "./relatedEfforts";
+import {InternalLink} from "../components/internalLink";
 
 export class AboutMachineLearning extends React.Component {
 	render() {
@@ -40,8 +41,7 @@ export class AboutMachineLearning extends React.Component {
 						Change Using Cycle-Consistent Adversarial Networks</ExternalLink></li>
 					<li><ExternalLink href={'https://github.com/cc-ai/kdb'}>Our GitHub repository</ExternalLink></li>
 				</ul>
-				<p>Click <span className="link"
-							   onClick={() => this.context.pageLoader(<RelatedEfforts/>)}>here</span> to learn more
+				<p>Click <InternalLink page={RelatedEfforts}>here</InternalLink> to learn more
 					about efforts related to ours.</p>
 			</StaticPage>
 		);

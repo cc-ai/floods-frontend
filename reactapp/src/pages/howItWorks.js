@@ -3,6 +3,7 @@ import {AppContext} from "../contexts/AppContext";
 import {StaticPage} from "../components/StaticPage";
 import {FloodModels} from "./floodModels";
 import {AboutMachineLearning} from "./aboutMachineLearning";
+import {InternalLink} from "../components/internalLink";
 
 export class HowItWorks extends React.Component {
 	render() {
@@ -16,7 +17,7 @@ export class HowItWorks extends React.Component {
 						precipitation, relative humidity, and temperature, and how these are likely to change in
 						2050 due to the consequences of climate change.
 						For more information on our flood models,
-						click <span className="link" onClick={() => this.context.pageLoader(<FloodModels/>)}>here</span>.
+						click <InternalLink page={FloodModels}>here</InternalLink>.
 					</li>
 					<li>
 						<strong>The Generative Adversarial Network:</strong> generative adversarial networks, or GANs,
@@ -24,8 +25,7 @@ export class HowItWorks extends React.Component {
 						competing with each other : one tries to generate plausible images to fool the other.
 						The other tries to differentiate real and generated examples, and not let itself be fooled.
 						We harness GANs to transform images of non-flooded locations to flooded
-						ones - click <span className="link" onClick={() => this.context.pageLoader(
-						<AboutMachineLearning/>)}>here</span> to find out how!
+						ones - click <InternalLink page={AboutMachineLearning}>here</InternalLink> to find out how!
 					</li>
 				</ol>
 				<p>

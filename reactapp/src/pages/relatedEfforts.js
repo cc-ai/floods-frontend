@@ -3,6 +3,7 @@ import {AppContext} from "../contexts/AppContext";
 import {StaticPage} from "../components/StaticPage";
 import {ExternalLink} from "../components/ExternalLink";
 import {Contact} from "./contact";
+import {InternalLink} from "../components/internalLink";
 
 export class RelatedEfforts extends React.Component {
 	render() {
@@ -20,7 +21,7 @@ export class RelatedEfforts extends React.Component {
 				<p><ExternalLink href={'https://stanfordmlgroup.github.io/programs/aicc-bootcamp/'}>AI for Climate
 					Change Bootcamp (MIT)</ExternalLink></p>
 
-				<p><span className="link" onClick={() => this.context.pageLoader(<Contact/>)}>Contact us</span> to add
+				<p><InternalLink page={Contact}>Contact us</InternalLink> to add
 					your project here!</p>
 			</StaticPage>
 		);

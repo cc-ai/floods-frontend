@@ -3,8 +3,8 @@ import React from 'react';
 function voidFunction() {}
 
 export class AppContextInstance {
-	constructor(pageLoader, google) {
-		this.pageLoader = pageLoader || voidFunction;
+	constructor(registerPage, google) {
+		this.registerPage = registerPage || voidFunction;
 		this.google = google || null;
 		this.geocoder = google ? new google.maps.Geocoder() : null;
 		this.autocomplete = google ? new google.maps.places.AutocompleteService() : null;

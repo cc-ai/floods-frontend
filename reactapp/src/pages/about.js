@@ -5,6 +5,7 @@ import {ExternalLink} from "../components/ExternalLink";
 import {AboutMachineLearning} from "./aboutMachineLearning";
 import {FloodModels} from "./floodModels";
 import {HowItWorks} from "./howItWorks";
+import {InternalLink} from "../components/internalLink";
 
 export class About extends React.Component {
 	render() {
@@ -15,16 +16,17 @@ export class About extends React.Component {
 					Yoshua Bengio at <ExternalLink href={"https://mila.quebec/"}>Mila Quebec AI Institute</ExternalLink>.
 				</p>
 				<p>
-					Using the latest techniques from <span className="link" onClick={() => this.context.pageLoader(
-					<AboutMachineLearning/>)}>Machine Learning</span> and <span className="link" onClick={() => this.context.pageLoader(<FloodModels/>)}>
-					Climate Science</span>, we are working on creating images of accurate, vivid, and personalized outcomes of climate change.
+					Using the latest techniques from <InternalLink page={AboutMachineLearning}>
+					Machine Learning</InternalLink> and <InternalLink page={FloodModels}>
+					Climate Science</InternalLink>, we are working on creating images of accurate, vivid, and
+					personalized outcomes of climate change.
 				</p>
 				<p>
 					Our goal is to raise awareness and conceptual understanding of climate change by bringing the
 					future closer. As a prototype, we first focus on modeling flood consequences on homes.
 				</p>
 				<p>
-					For more information on the project, click <span className="link" onClick={() => this.context.pageLoader(<HowItWorks/>)}>here</span>.
+					For more information on the project, click <InternalLink page={HowItWorks}>here</InternalLink>.
 				</p>
 			</StaticPage>
 		);

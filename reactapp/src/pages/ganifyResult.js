@@ -7,12 +7,13 @@ import {AddressManager} from "../components/AddressManager";
 import ReactCompareImage from 'react-compare-image';
 import {FloodModels} from "./floodModels";
 import {HowClimateChangeCausesFlooding} from "./howClimateChangeCausesFlooding";
+import {InternalLink} from "../components/internalLink";
 
 export class GanifyResult extends React.Component {
 	constructor(props) {
 		super(props);
-		const address = props.initialAddress || '';
-		const result = props.initialResult || {};
+		const address = GanifyResult.getInitialAddress(props, '');
+		const result = GanifyResult.getInitialResult(props, '');
 		this.state = {
 			address: address,
 			image: result.original ? `data:image/jpeg;base64,${result.original}` : null,
@@ -22,6 +23,22 @@ export class GanifyResult extends React.Component {
 			error: result.error
 		};
 		this.onSubmitted = this.onSubmitted.bind(this);
+	}
+
+	static getInitialAddress(props, defaultValue) {
+		if (props.initialAddress !== undefined)
+			return props.initialAddress;
+		if (props.location !== undefined)
+			return props.location.state.initialAddress;
+		return defaultValue;
+	}
+
+	static getInitialResult(props, defaultValue) {
+		if (props.initialResult !== undefined)
+			return props.initialResult;
+		if (props.location !== undefined)
+			return props.location.state.initialResult;
+		return defaultValue;
 	}
 
 	setState(state) {
@@ -45,7 +62,6 @@ export class GanifyResult extends React.Component {
 
 	render() {
 		const address = this.state.address;
-		const pageLoader = this.context.pageLoader;
 		const metadata = this.state.metadata ? Object.values(this.state.metadata) : null;
 		if (metadata)
 			metadata.sort((m1, m2) => m1.title.localeCompare(m2.title));
@@ -61,30 +77,31 @@ export class GanifyResult extends React.Component {
 								<div>
 									{this.state.warning ? <p className="warning-message">{this.state.warning}</p> : ''}
 									<p>
-										According to <span className="link" onClick={() => pageLoader(<FloodModels/>)}>climate predictions in 2050</span>,
+										According to <InternalLink page={FloodModels}>climate predictions in
+										2050</InternalLink>,
 										this location is not at risk of experiencing flooding.
 									</p>
 									<p>
+										{/* TODO Link to closest location that is flooded (if Mike or me (notoraptor) can do that) */}
 										That doesn’t mean that it won’t be affected!
 										Click <strong><em><u>here</u></em></strong> to find the closest
-										{/* TODO Link to closest location that is flooded (if Mike or me (notoraptor) can do that) */}
 										location that is liable to be flooded,
-										and <span className="link" onClick={() => pageLoader(<HowClimateChangeCausesFlooding/>)}>
-										here</span> to learn about how climate change will affect global weather
+										and <InternalLink page={HowClimateChangeCausesFlooding}>
+										here</InternalLink> to learn about how climate change will affect global weather
 										patterns.
 									</p>
 									<p>
 										This projection is based on the ‘Business as usual’ scenario
 										(3 degrees warming). But this isn’t guaranteed to happen!
-										Click <span className="link" onClick={() => pageLoader(<WhatYouCanDo/>)}>
-										here</span> to learn what you can do to fight climate change!
+										Click <InternalLink page={WhatYouCanDo}>
+										here</InternalLink> to learn what you can do to fight climate change!
 									</p>
 								</div>
 							) : (
 								<div>
 									<p>
-										According to <span className="link" onClick={() => pageLoader(<FloodModels/>)}>
-										climate predictions in 2050</span>, this location is at risk of
+										According to <InternalLink page={FloodModels}>
+										climate predictions in 2050</InternalLink>, this location is at risk of
 										experiencing ___ cm of flooding with an average time between floods of _____.
 									</p>
 									<p>
@@ -95,8 +112,8 @@ export class GanifyResult extends React.Component {
 									<p>
 										This projection is based on the ‘no change’ scenario (3 degrees warming).
 										But you can change this!
-										Click <span className="link" onClick={() => pageLoader(<WhatYouCanDo/>)}>here
-									</span> to learn what you can do to fight climate change!
+										Click <InternalLink page={WhatYouCanDo}>here
+									</InternalLink> to learn what you can do to fight climate change!
 									</p>
 								</div>
 							)
@@ -122,9 +139,11 @@ export class GanifyResult extends React.Component {
 							))}</div>
 						) : ''}
 						<div className="my-4">
-							<button className="btn btn-secondary btn-lg px-5" onClick={() => pageLoader(<WhatYouCanDo/>)}>
+							<InternalLink className="btn btn-secondary btn-lg px-5"
+										  page={WhatYouCanDo}
+										  removeDefaultClass={true}>
 								<strong>Make it change : have an impact</strong>
-							</button>
+							</InternalLink>
 						</div>
 					</div>
 				</div>
@@ -134,7 +153,9 @@ export class GanifyResult extends React.Component {
 }
 
 GanifyResult.propTypes = {
-	initialAddress: PropTypes.string.isRequired,
+	// location may be sent by react-router
+	location: PropTypes.object,
+	initialAddress: PropTypes.string,
 	initialResult: PropTypes.object
 };
 GanifyResult.contextType = AppContext;

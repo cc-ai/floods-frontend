@@ -15,10 +15,9 @@ export class Glossary extends React.Component {
 					dioxide (CO<sub>2</sub>), low amounts of which occur naturally in the Earth's atmosphere, but its
 					concentration has been rapidly increasing due to human activity. This increase is dangerous because
 					of CO<sub>2</sub>’s effect as a greenhouse gas, meaning that it absorbs and emits infrared radiation
-					in the wavelength range emitted by the Earth, which contributes to the global warming of the planet (
-					<ExternalLink href={'https://www.ipcc.ch/site/assets/uploads/2018/02/WGIIAR5-AnnexII_FINAL.pdf'}>
-						IPCC Glossary
-					</ExternalLink>).
+					in the wavelength range emitted by the Earth, which contributes to the global warming of the planet
+					(<ExternalLink href={'https://www.ipcc.ch/site/assets/uploads/2018/02/WGIIAR5-AnnexII_FINAL.pdf'}>
+					IPCC Glossary</ExternalLink>).
 				</p>
 				<hr/>
 
@@ -74,11 +73,11 @@ export class Glossary extends React.Component {
 					‘Carbon Neutral’ is a term used to indicate a net zero carbon footprint of an individual or
 					organization. While a small part of carbon-neutral entities rely entirely on renewable energy that
 					is zero-carbon, the large majority of entities balance their emissions of CO<sub>2</sub>-equivalents,
-					using approaches such as carbon offsetting or the purchase of RECs. Many major technology companies such
-					as Google and Microsoft are carbon-neutral, matching 100% of their electricity use with renewable
-					energy purposes (Google, 2018; Microsoft, 2018). This does not mean, however, that their operations
-					do not produce CO<sub>2</sub>-equivalents, since this is dependent on the energy sources of the
-					locations in which their infrastructure is located.
+					using approaches such as carbon offsetting or the purchase of RECs. Many major technology companies
+					such as Google and Microsoft are carbon-neutral, matching 100% of their electricity use with
+					renewable energy purposes (Google, 2018; Microsoft, 2018). This does not mean, however, that their
+					operations do not produce CO<sub>2</sub>-equivalents, since this is dependent on the energy sources
+					of the locations in which their infrastructure is located.
 				</p>
 			</StaticPage>
 		);
